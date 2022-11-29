@@ -10,3 +10,11 @@ yarn
 # 启动项目(开发模式)
 yarn dev
 ```
+
+### 配置
+
+src/config/index.php
+```
+API_URL: 接口地址
+...
+```
