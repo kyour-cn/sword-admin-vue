@@ -4,10 +4,24 @@ import http from "@/utils/request"
 export default {
 	menu: {
 		list: {
-			url: `${config.API_URL}/system/menu/list`,
+			url: `${config.API_URL}/admin/system/menuList`,
 			name: "获取菜单",
 			get: async function(){
 				return await http.get(this.url);
+			}
+		},
+		edit: {
+			url: `${config.API_URL}/admin/system/editMenu`,
+			name: "编辑菜单",
+			post: async function(data={}){
+				return await http.post(this.url, data);
+			}
+		},
+		delete: {
+			url: `${config.API_URL}/admin/system/deleteMenu`,
+			name: "删除菜单",
+			post: async function(data={}){
+				return await http.post(this.url, data);
 			}
 		}
 	},
