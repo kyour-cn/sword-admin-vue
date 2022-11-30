@@ -19,11 +19,11 @@
 		description: "当前项目版本信息",
 		data() {
 			return {
-				ver: 'loading...'
+				ver: '1.6.6'
 			}
 		},
 		mounted() {
-			this.getVer()
+			// this.getVer()
 		},
 		methods: {
 			async getVer(){
