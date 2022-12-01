@@ -67,10 +67,8 @@ export default {
             },
             menuFilterText: "",
 			appList: [
-				{id: 1, name: '系统应用'},
-				{id: 2, name: '公司应用'},
 			],
-			selectedApp: 1
+			selectedApp: 0
         }
     },
     watch: {
@@ -82,20 +80,32 @@ export default {
 		}
     },
     mounted() {
+
+		this.getApp();
+
         this.getMenu();
     },
     methods: {
+
+		async getApp() {
+			var res = await this.$API.system.app.list.get();
+			this.appList = res.data.rows;
+			this.selectedApp = res.data.rows[0].id;
+		},
+
         //加载树数据
         async getMenu() {
             this.menuloading = true
-            var res = await this.$API.system.menu.list.get();
+            var res = await this.$API.system.menu.list.get({
+				appid: this.selectedApp
+			});
             this.menuloading = false
             this.menuList = res.data;
         },
         //树点击
         menuClick(data, node) {
             var pid = node.level == 1 ? undefined : node.parent.data.id;
-            this.$refs.save.setData(data, pid)
+            this.$refs.save.setData(data, pid, this.selectedApp)
             this.$refs.main.$el.scrollTop = 0
         },
         //树过滤
@@ -120,7 +130,8 @@ export default {
                 meta: {
                     title: newMenuName,
                     type: "menu"
-                }
+                },
+				appid: this.selectedApp
             }
             this.menuloading = true
             var res = await this.$API.system.menu.edit.post(newMenuData)

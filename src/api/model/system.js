@@ -6,8 +6,8 @@ export default {
 		list: {
 			url: `${config.API_URL}/admin/system/menuList`,
 			name: "获取菜单",
-			get: async function(){
-				return await http.get(this.url);
+			get: async function(data ={}){
+				return await http.get(this.url, data);
 			}
 		},
 		edit: {

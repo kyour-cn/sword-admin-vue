@@ -107,6 +107,7 @@ export default {
         return {
             form: {
                 id: "",
+				appid: 0,
                 parentId: "",
                 name: "",
                 path: "",
@@ -144,7 +145,8 @@ export default {
                 code: "",
                 url: ""
             },
-            loading: false
+            loading: false,
+			appId: 0
         }
     },
     watch: {
@@ -186,10 +188,11 @@ export default {
             }
         },
         //表单注入数据
-        setData(data, pid) {
+        setData(data, pid, appId) {
             this.form = data
             this.form.apiList = data.apiList || []
             this.form.parentId = pid
+			this.form.appid = appId
         }
     }
 }
