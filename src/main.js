@@ -7,6 +7,8 @@ import router from './router'
 import store from './store'
 import { createApp } from 'vue'
 import App from './App.vue'
+// 引入mock index.js 执行一遍
+import '@/mock/index.js'
 
 const app = createApp(App);
 
