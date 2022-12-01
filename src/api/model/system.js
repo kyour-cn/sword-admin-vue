@@ -82,7 +82,21 @@ export default {
 			get: async function(){
 				return await http.get(this.url);
 			}
-		}
+		},
+		edit: {
+			url: `${config.API_URL}/admin/system/editApp`,
+			name: "新增或修改应用",
+			post: async function(data={}){
+				return await http.post(this.url, data);
+			}
+		},
+		del: {
+			url: `${config.API_URL}/admin/system/deleteApp`,
+			name: "删除应用",
+			post: async function(data={}){
+				return await http.post(this.url, data);
+			}
+		},
 	},
 	log: {
 		list: {

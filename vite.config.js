@@ -4,8 +4,9 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base:'./',
+  base: './',
   plugins: [vue()],
+  hmr: true,
   resolve: {
     // https://cn.vitejs.dev/config/#resolve-alias
     alias: {
@@ -34,16 +35,16 @@ export default defineConfig({
   css: {
     postcss: {
       plugins: [
-          {
-            postcssPlugin: 'internal:charset-removal',
-            AtRule: {
-              charset: (atRule) => {
-                if (atRule.name === 'charset') {
-                  atRule.remove();
-                }
+        {
+          postcssPlugin: 'internal:charset-removal',
+          AtRule: {
+            charset: (atRule) => {
+              if (atRule.name === 'charset') {
+                atRule.remove();
               }
             }
           }
+        }
       ],
     },
   },

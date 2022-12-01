@@ -1,23 +1,14 @@
 <template>
 	<el-dialog :title="titleMap[mode]" v-model="visible" :width="500" destroy-on-close @closed="$emit('closed')">
 		<el-form :model="form" :rules="rules" :disabled="mode=='show'" ref="dialogForm" label-width="100px">
-			<el-form-item label="姓名" prop="name">
+			<el-form-item label="名称" prop="name">
 				<el-input v-model="form.name" placeholder="请输入姓名" clearable></el-input>
 			</el-form-item>
-			<el-form-item label="性别" prop="sex">
-				<el-radio-group v-model="form.sex">
-					<el-radio label="男">男</el-radio>
-					<el-radio label="女">女</el-radio>
-				</el-radio-group>
+			<el-form-item label="备注信息" prop="remark">
+				<el-input v-model="form.remark" placeholder="请备注信息" clearable></el-input>
 			</el-form-item>
-			<el-form-item label="邮箱" prop="email">
-				<el-input v-model="form.email" placeholder="请输入邮箱" clearable></el-input>
-			</el-form-item>
-			<el-form-item label="评分" prop="num">
-				<el-input-number v-model="form.num" :min="0" style="width: 100%;"></el-input-number>
-			</el-form-item>
-			<el-form-item label="状态" prop="boolean">
-				<el-switch v-model="form.boolean"></el-switch>
+			<el-form-item label="状态" prop="status">
+				<el-switch v-model="form.status"></el-switch>
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -42,17 +33,18 @@
 				isSaveing: false,
 				//表单数据
 				form: {
-					id:"",
 					name: "",
-					sex: "男",
-					email: "",
-					num: 0,
-					boolean: true
+					remark: "",
+					status: true,
+					sort:0
 				},
 				//验证规则
 				rules: {
 					name: [
-						{required: true, message: '请输入姓名'}
+						{required: true, message: '请输入姓名'},
+					],
+					status: [
+						{required: true, message: '请输入姓名'},
 					]
 				},
 				//所需数据选项
@@ -81,28 +73,35 @@
 					return false
 				}
 				this.isSaveing = true;
-				var res = await this.$API.demo.post.post(this.form);
+				const data =this.form
+				data.status=data.status?1:0;
+				const res = await this.$API.system.app.edit.post(data);
 				this.isSaveing = false;
-				if(res.code == 200){
-					if(this.mode=='add'){
-						this.form.id = res.data
-					}
-					this.$emit('success', this.form, this.mode)
-					this.visible = false;
-					this.$message.success("操作成功")
+				this.visible=false;
+				if(res.code === 0){
+						this.$emit('success', this.form, this.mode)
+						this.$message.success("操作成功")
 				}else{
-					this.$alert(res.message, "提示", {type: 'error'})
-				}
+						this.$alert(res.message, "提示", {type: 'error'})
+					}
+				// if(res.code == 200){
+				// 	if(this.mode=='add'){
+				// 		this.form.id = res.data
+				// 	}
+				// 	this.visible = false;
+				// 	this.$message.success("操作成功")
+				// }else{
+				// 	this.$alert(res.message, "提示", {type: 'error'})
+				// }
 			},
 			//表单注入数据
 			setData(data){
 				this.form.id = data.id
 				this.form.name = data.name
-				this.form.sex = data.sex
-				this.form.email = data.email
-				this.form.num = data.num
-				this.form.boolean = data.boolean
-
+				this.form.remark = data.remark
+				this.form.status = data.status===1?true:false
+				this.form.sort = data.sort
+				console.log(this.form)
 				//可以和上面一样单个注入，也可以像下面一样直接合并进去
 				//Object.assign(this.form, data)
 			}

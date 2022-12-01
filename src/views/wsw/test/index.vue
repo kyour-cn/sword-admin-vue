@@ -46,9 +46,7 @@ export default {
   data() {
     return {
       searchValue: '',
-      tableData: [
-
-      ]
+      tableData: []
     }
   },
   mounted() {
@@ -62,7 +60,7 @@ export default {
       let res = await this.$API.mock.menu.list.get();
       console.log("res:");
       console.log(res);
-      if (res.code = 0) {
+      if (res.code === 0) {
         this.tableData = res.data;
       }
     }
@@ -71,11 +69,7 @@ export default {
 </script>
 
 
-<script  setup>
-import { ref } from 'vue'
-import { Search } from '@element-plus/icons-vue'
-const searchValue = ref('')
-</script> */
+
 
 
 

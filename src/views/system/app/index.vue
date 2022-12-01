@@ -9,16 +9,14 @@
 		<el-main class="nopadding">
 			<scTable ref="table" :apiObj="list.apiObj" row-key="id" @selection-change="selectionChange" stripe>
 				<el-table-column type="selection" width="50"></el-table-column>
-				<el-table-column label="姓名" prop="name" width="180"></el-table-column>
-				<el-table-column label="性别" prop="sex" width="150"></el-table-column>
-				<el-table-column label="邮箱" prop="email" width="250"></el-table-column>
-				<el-table-column label="状态" prop="boolean" width="60">
+				<el-table-column label="名称" prop="name" width="180"></el-table-column>
+				<el-table-column label="状态" prop="status" width="60">
 					<template #default="scope">
-						<sc-status-indicator v-if="scope.row.boolean" type="success"></sc-status-indicator>
-						<sc-status-indicator v-if="!scope.row.boolean" pulse type="danger"></sc-status-indicator>
+						<sc-status-indicator v-if="scope.row.status" type="success"></sc-status-indicator>
+						<sc-status-indicator v-if="!scope.row.status" pulse type="danger"></sc-status-indicator>
 					</template>
 				</el-table-column>
-				<el-table-column label="评分" prop="num" width="150"></el-table-column>
+				<el-table-column label="备注信息" prop="remark" ></el-table-column>
 				<el-table-column label="操作" fixed="right" align="right" width="300">
 					<template #default="scope">
 						<el-button plain size="small" @click="table_show(scope.row)">查看</el-button>
@@ -91,9 +89,10 @@
 			},
 			//删除明细
 			async table_del(row, index){
-				var reqData = {id: row.id}
-				var res = await this.$API.demo.post.post(reqData);
-				if(res.code == 200){
+				var reqData = {ids: row.id}
+				var res = await this.$API.system.app.del.post(reqData);
+				console.log(res,"res");
+				if(res.code === 0){
 					this.$refs.table.removeIndex(index)
 					this.$message.success("删除成功")
 				}else{
@@ -113,9 +112,13 @@
 				}
 
 				var ids = this.selection.map(v => v.id)
-				this.$refs.table.removeKeys(ids)
-				this.$message.success("操作成功")
-
+				var res = await this.$API.system.app.del.post({ids});
+				if(res.code === 0){
+					this.$refs.table.removeKeys(ids)
+					this.$message.success("操作成功")
+				}else {
+					this.$alert(res.message, "提示", {type: 'error'})
+				}
 			},
 			//表格选择后回调事件
 			selectionChange(selection){
@@ -124,14 +127,14 @@
 			//本地更新数据
 			handleSaveSuccess(data, mode){
 				//为了减少网络请求，直接变更表格内存数据
-				if(mode=='add'){
-					this.$refs.table.unshiftRow(data)
-				}else if(mode=='edit'){
-					this.$refs.table.updateKey(data)
-				}
+				// if(mode=='add'){
+				// 	this.$refs.table.unshiftRow(data)
+				// }else if(mode=='edit'){
+				// 	this.$refs.table.updateKey(data)
+				// }
 
 				//当然也可以暴力的直接刷新表格
-				// this.$refs.table.refresh()
+				this.$refs.table.refresh()
 			}
 		}
 	}
