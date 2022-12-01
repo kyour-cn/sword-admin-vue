@@ -55,7 +55,14 @@ export default {
 			get: async function(params){
 				return await http.get(this.url, params);
 			}
-		}
+		},
+		edit: {
+			url: `${config.API_URL}/admin/system/editRole`,
+			name: "新增或修改角色",
+			post: async function(data={}){
+				return await http.post(this.url, data);
+			}
+		},
 	},
 	menu: {
 		list: {

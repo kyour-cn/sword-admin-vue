@@ -27,37 +27,37 @@
 // ]
 
 const routes = [
-    {
-        name: "test",
-        path: "/test",
-        meta: {
-            icon: "el-icon-eleme-filled",
-            title: "WSW测试",
-            // role: ["SA"]
-        },
-        children: [
-            {
-                name: "wsw",
-                path: "wsw",
-                component: "wsw/test/index",
-                meta: {
-                    icon: "el-icon-menu",
-                    title: "测试页面",
-                    // role: ["SA"]
-                }
-            },
-            {
-                name: "wsw2",
-                path: "wsw2",
-                component: "wsw/test2/index",
-                meta: {
-                    icon: "el-icon-menu",
-                    title: "测试页面2",
-                    // role: ["SA"]
-                }
-            }
-        ]
-    }
+    // {
+    //     name: "test",
+    //     path: "/test",
+    //     meta: {
+    //         icon: "el-icon-eleme-filled",
+    //         title: "WSW测试",
+    //         // role: ["SA"]
+    //     },
+    //     children: [
+    //         {
+    //             name: "wsw",
+    //             path: "wsw",
+    //             component: "wsw/test/index",
+    //             meta: {
+    //                 icon: "el-icon-menu",
+    //                 title: "测试页面",
+    //                 // role: ["SA"]
+    //             }
+    //         },
+    //         {
+    //             name: "wsw2",
+    //             path: "wsw2",
+    //             component: "wsw/test2/index",
+    //             meta: {
+    //                 icon: "el-icon-menu",
+    //                 title: "测试页面2",
+    //                 // role: ["SA"]
+    //             }
+    //         }
+    //     ]
+    // }
 ]
 
 export default routes;

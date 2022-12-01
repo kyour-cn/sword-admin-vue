@@ -75,7 +75,7 @@
 				this.isSaveing = true;
 				const data =this.form
 				data.status=data.status?1:0;
-				const res = await this.$API.system.app.edit.post(data);
+				const res = await this.$API.system.role.edit.post(data);
 				this.isSaveing = false;
 				this.visible=false;
 				if(res.code === 0){

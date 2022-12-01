@@ -73,17 +73,20 @@
 			//表单提交方法
 			submit(){
 				this.$refs.dialogForm.validate(async (valid) => {
-					if (valid) {
-						this.isSaveing = true;
-						var res = await this.$API.demo.post.post(this.form);
-						this.isSaveing = false;
-						if(res.code == 200){
-							this.$emit('success', this.form, this.mode)
-							this.visible = false;
-							this.$message.success("操作成功")
-						}else{
-							this.$alert(res.message, "提示", {type: 'error'})
-						}
+					if(!valid){
+						return false
+					}
+					this.isSaveing = true;
+					const data =this.form
+					data.status=data.status?1:0;
+					const res = await this.$API.system.app.edit.post(data);
+					this.isSaveing = false;
+					this.visible=false;
+					if(res.code === 0){
+						this.$emit('success', this.form, this.mode)
+						this.$message.success("操作成功")
+					}else{
+						this.$alert(res.message, "提示", {type: 'error'})
 					}
 				})
 			},

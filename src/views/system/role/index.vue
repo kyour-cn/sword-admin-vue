@@ -20,9 +20,15 @@
 				<el-table-column label="角色名称" prop="name" width="150"></el-table-column>
 <!--				<el-table-column label="别名" prop="alias" width="200"></el-table-column>-->
 				<el-table-column label="排序" prop="sort" width="80"></el-table-column>
-				<el-table-column label="状态" prop="status" width="80">
+<!--				<el-table-column label="状态" prop="status" width="80">-->
+<!--					<template #default="scope">-->
+<!--						<el-switch  v-model="scope.row.status" @change="changeSwitch($event, scope.row)" :loading="scope.row.$switch_status" active-value="1" inactive-value="0"></el-switch>-->
+<!--					</template>-->
+<!--				</el-table-column>-->
+				<el-table-column label="状态" prop="status" width="60">
 					<template #default="scope">
-						<el-switch v-model="scope.row.status" @change="changeSwitch($event, scope.row)" :loading="scope.row.$switch_status" active-value="1" inactive-value="0"></el-switch>
+						<sc-status-indicator v-if="scope.row.status" type="success"></sc-status-indicator>
+						<sc-status-indicator v-if="!scope.row.status" pulse type="danger"></sc-status-indicator>
 					</template>
 				</el-table-column>
 				<el-table-column label="创建时间" prop="date" width="180"></el-table-column>
@@ -74,7 +80,22 @@
 				}
 			}
 		},
+		mounted() {
+			// this.getList()
+		},
 		methods: {
+		  	async getList(){
+				let res = await this.$API.system.role.list.get()
+				console.log(res);
+				let data = res.data.rows
+				const newData =[]
+				data.forEach(ele =>{
+					let val = ele;
+					val.status=val.status==1?true:false
+					newData.push(val);
+				})
+				console.log(newData)
+			},
 			//添加
 			add(){
 				this.dialog.save = true
