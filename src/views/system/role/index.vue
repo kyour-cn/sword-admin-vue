@@ -17,8 +17,8 @@
 			<scTable ref="table" :apiObj="apiObj" row-key="id" @selection-change="selectionChange" stripe>
 				<el-table-column type="selection" width="50"></el-table-column>
 				<el-table-column label="#" type="index" width="50"></el-table-column>
-				<el-table-column label="角色名称" prop="label" width="150"></el-table-column>
-				<el-table-column label="别名" prop="alias" width="200"></el-table-column>
+				<el-table-column label="角色名称" prop="name" width="150"></el-table-column>
+<!--				<el-table-column label="别名" prop="alias" width="200"></el-table-column>-->
 				<el-table-column label="排序" prop="sort" width="80"></el-table-column>
 				<el-table-column label="状态" prop="status" width="80">
 					<template #default="scope">
