@@ -3,7 +3,15 @@
         <el-aside width="300px" v-loading="menuloading">
             <el-container>
                 <el-header>
-                    <el-input placeholder="输入关键字进行过滤" v-model="menuFilterText" clearable></el-input>
+					<el-select v-model="selectedApp">
+						<el-option
+							v-for="item in appList"
+							:key="item.id"
+							:label="item.name"
+							:value="item.id"
+						/>
+					</el-select>
+                    <el-input placeholder="输入关键字过滤" v-model="menuFilterText" clearable></el-input>
                 </el-header>
                 <el-main class="nopadding">
                     <el-tree ref="menu" class="menu" node-key="id" :data="menuList" :props="menuProps" draggable highlight-current
@@ -57,13 +65,21 @@ export default {
                     return data.meta.title
                 }
             },
-            menuFilterText: ""
+            menuFilterText: "",
+			appList: [
+				{id: 1, name: '系统应用'},
+				{id: 2, name: '公司应用'},
+			],
+			selectedApp: 1
         }
     },
     watch: {
         menuFilterText(val) {
             this.$refs.menu.filter(val);
-        }
+        },
+		selectedApp(){
+			this.getMenu();
+		}
     },
     mounted() {
         this.getMenu();
