@@ -8,20 +8,20 @@
                 <h2>{{form.meta.title || "新增菜单"}}</h2>
                 <el-form :model="form" :rules="rules" ref="dialogForm" label-width="80px" label-position="left">
                     <el-form-item label="显示名称" prop="meta.title">
-                        <el-input v-model="form.meta.title" clearable placeholder="菜单显示名字"></el-input>
+                        <el-input v-model="form.meta.title" clearable placeholder="权限显示名字"></el-input>
                     </el-form-item>
-                    <el-form-item label="上级菜单" prop="parentId">
+                    <el-form-item label="上级权限" prop="parentId">
                         <el-cascader v-model="form.parentId" :options="menuOptions" :props="menuProps" :show-all-levels="false"
-                            placeholder="顶级菜单" clearable></el-cascader>
+                            placeholder="顶级权限" clearable></el-cascader>
                     </el-form-item>
-                    <el-form-item label="类型" prop="meta.type">
-                        <el-radio-group v-model="form.meta.type">
-                            <el-radio-button label="menu">菜单</el-radio-button>
-                            <el-radio-button label="iframe">Iframe</el-radio-button>
-                            <el-radio-button label="link">外链</el-radio-button>
-                            <el-radio-button label="button">按钮</el-radio-button>
-                        </el-radio-group>
-                    </el-form-item>
+<!--                    <el-form-item label="类型" prop="meta.type">-->
+<!--                        <el-radio-group v-model="form.meta.type">-->
+<!--                            <el-radio-button label="menu">菜单</el-radio-button>-->
+<!--                            <el-radio-button label="iframe">Iframe</el-radio-button>-->
+<!--                            <el-radio-button label="link">外链</el-radio-button>-->
+<!--                            <el-radio-button label="button">按钮</el-radio-button>-->
+<!--                        </el-radio-group>-->
+<!--                    </el-form-item>-->
                     <el-form-item label="别名" prop="name">
                         <el-input v-model="form.name" clearable placeholder="菜单别名"></el-input>
                         <div class="el-form-item-msg">系统唯一且与内置组件名一致，否则导致缓存失效。如类型为Iframe的菜单，别名将代替源地址显示在地址栏</div>
