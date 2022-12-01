@@ -16,7 +16,7 @@
       </el-icon>
     </div>
     <div class="msg panel-item" @click="showMsg">
-      <el-badge :hidden="msgList.length==0" :value="msgList.length" class="badge" type="danger">
+      <el-badge :hidden="msgList.length == 0" :value="msgList.length" class="badge" type="danger">
         <el-icon>
           <el-icon-chat-dot-round />
         </el-icon>
@@ -34,15 +34,15 @@
                       </el-badge>
                     </div>
                     <div class="msg-list__main">
-                      <h2>{{item.title}}</h2>
-                      <p>{{item.describe}}</p>
+                      <h2>{{ item.title }}</h2>
+                      <p>{{ item.describe }}</p>
                     </div>
                     <div class="msg-list__time">
-                      <p>{{item.time}}</p>
+                      <p>{{ item.time }}</p>
                     </div>
                   </a>
                 </li>
-                <el-empty v-if="msgList.length==0" description="暂无新消息" :image-size="100"></el-empty>
+                <el-empty v-if="msgList.length == 0" description="暂无新消息" :image-size="100"></el-empty>
               </ul>
             </el-scrollbar>
           </el-main>
@@ -72,7 +72,7 @@
   </div>
 
   <el-dialog v-model="searchVisible" :width="700" title="搜索" custom-class="drawerBG" center destroy-on-close>
-    <search @success="searchVisible=false"></search>
+    <search @success="searchVisible = false"></search>
   </el-dialog>
 
   <el-drawer v-model="tasksVisible" :size="450" title="任务中心" custom-class="drawerBG" destroy-on-close>
@@ -98,40 +98,40 @@ export default {
       tasksVisible: false,
       msg: false,
       msgList: [
-        {
-          id: 1,
-          type: 'user',
-          avatar: "img/avatar.jpg",
-          title: "Skuya",
-          describe: "如果喜欢就点个星星支持一下哦",
-          link: "https://gitee.com/lolicode/scui",
-          time: "5分钟前"
-        },
-        {
-          id: 2,
-          type: 'user',
-          avatar: "img/avatar2.gif",
-          title: "Lolowan",
-          describe: "点进去Gitee获取最新开源版本",
-          link: "https://gitee.com/lolicode/scui",
-          time: "14分钟前"
-        },
-        {
-          id: 3,
-          type: 'system',
-          avatar: "img/logo.png",
-          title: "感谢登录SCUI Admin",
-          describe: "Vue 3.0 + Vue-Router 4.0 + ElementPlus + Axios 后台管理系统。",
-          link: "https://gitee.com/lolicode/scui",
-          time: "2020年7月24日"
-        }
+        // {
+        // 	id: 1,
+        // 	type: 'user',
+        // 	avatar: "img/avatar.jpg",
+        // 	title: "Skuya",
+        // 	describe: "如果喜欢就点个星星支持一下哦",
+        // 	link: "https://gitee.com/lolicode/scui",
+        // 	time: "5分钟前"
+        // },
+        // {
+        // 	id: 2,
+        // 	type: 'user',
+        // 	avatar: "img/avatar2.gif",
+        // 	title: "Lolowan",
+        // 	describe: "点进去Gitee获取最新开源版本",
+        // 	link: "https://gitee.com/lolicode/scui",
+        // 	time: "14分钟前"
+        // },
+        // {
+        // 	id: 3,
+        // 	type: 'system',
+        // 	avatar: "img/logo.png",
+        // 	title: "感谢登录SCUI Admin",
+        // 	describe: "Vue 3.0 + Vue-Router 4.0 + ElementPlus + Axios 后台管理系统。",
+        // 	link: "https://gitee.com/lolicode/scui",
+        // 	time: "2020年7月24日"
+        // }
       ]
     }
   },
   created() {
     var userInfo = this.$TOOL.data.get("USER_INFO");
-    this.userName = userInfo.userName;
-    this.userNameF = this.userName?.substring(0, 1);
+    this.userName = userInfo.realname;
+    this.userNameF = this.userName.substring(0, 1);
   },
   methods: {
     //个人信息
@@ -200,6 +200,7 @@ export default {
   align-items: center;
   height: 100%;
 }
+
 .user-bar .panel-item {
   padding: 0 10px;
   cursor: pointer;
@@ -207,17 +208,21 @@ export default {
   display: flex;
   align-items: center;
 }
+
 .user-bar .panel-item i {
   font-size: 16px;
 }
+
 .user-bar .panel-item:hover {
   background: rgba(0, 0, 0, 0.1);
 }
+
 .user-bar .user-avatar {
   height: 49px;
   display: flex;
   align-items: center;
 }
+
 .user-bar .user-avatar label {
   display: inline-block;
   margin-left: 5px;
@@ -228,31 +233,38 @@ export default {
 .msg-list li {
   border-top: 1px solid #eee;
 }
+
 .msg-list li a {
   display: flex;
   padding: 20px;
 }
+
 .msg-list li a:hover {
   background: #ecf5ff;
 }
+
 .msg-list__icon {
   width: 40px;
   margin-right: 15px;
 }
+
 .msg-list__main {
   flex: 1;
 }
+
 .msg-list__main h2 {
   font-size: 15px;
   font-weight: normal;
   color: #333;
 }
+
 .msg-list__main p {
   font-size: 12px;
   color: #999;
   line-height: 1.8;
   margin-top: 5px;
 }
+
 .msg-list__time {
   width: 100px;
   text-align: right;
@@ -262,9 +274,11 @@ export default {
 .dark .msg-list__main h2 {
   color: #d0d0d0;
 }
+
 .dark .msg-list li {
   border-top: 1px solid #363636;
 }
+
 .dark .msg-list li a:hover {
   background: #383838;
 }
