@@ -122,7 +122,7 @@ export default {
         //增加
         async add(node, data) {
             var newMenuName = "未命名" + newMenuIndex++;
-            var newMenuData = {
+            let newMenuData = {
                 parentId: data ? data.id : "",
                 name: newMenuName,
                 path: "",
@@ -136,7 +136,7 @@ export default {
             this.menuloading = true
             var res = await this.$API.system.menu.edit.post(newMenuData)
             this.menuloading = false
-            newMenuData.id = res.data
+            newMenuData = res.data
 
             this.$refs.menu.append(newMenuData, node)
             this.$refs.menu.setCurrentKey(newMenuData.id)
