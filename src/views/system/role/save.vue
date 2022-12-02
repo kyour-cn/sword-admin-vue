@@ -24,6 +24,7 @@
 <script>
 	export default {
 		emits: ['success', 'closed'],
+		props:['selectedApp'],
 		data() {
 			return {
 				mode: "add",
@@ -54,7 +55,7 @@
 			}
 		},
 		mounted() {
-
+			console.log(this.selectedApp,"selectedApp")
 		},
 		methods: {
 			//显示
@@ -72,6 +73,8 @@
 					this.isSaveing = true;
 					const data = this.form
 					data.status= data.status?1:0;
+					// 带上父组件传下来的selectedApp
+					data.appid = this.selectedApp
 					const res = await this.$API.system.role.edit.post(data);
 					this.isSaveing = false;
 					this.visible=false;

@@ -54,7 +54,7 @@
 		</el-main>
 	</el-container>
 
-	<save-dialog v-if="dialog.save" ref="saveDialog" @success="handleSaveSuccess" @closed="dialog.save=false"></save-dialog>
+	<save-dialog v-if="dialog.save" ref="saveDialog" :selectedApp="selectedApp" @success="handleSaveSuccess" @closed="dialog.save=false"></save-dialog>
 
 	<permission-dialog v-if="dialog.permission" ref="permissionDialog" @closed="dialog.permission=false"></permission-dialog>
 
