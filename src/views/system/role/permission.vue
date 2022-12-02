@@ -18,6 +18,7 @@
 			return {
 				visible: false,
 				isSaveing: false,
+				appId: 0,
 				rule: {
 					list: [],
 					checked: [],
@@ -27,17 +28,10 @@
 						}
 					}
 				},
-				// data: {
-				// 	dataType :"1",
-				// 	list: [],
-				// 	checked: [],
-				// 	props: {},
-				// 	rule: ""
-				// },
 			}
 		},
 		mounted() {
-			this.getMenu()
+			this.getRule()
 		},
 		methods: {
 			open(){
@@ -57,13 +51,15 @@
 					this.$emit('success')
 				},1000)
 			},
-			async getMenu(){
-				const res = await this.$API.system.rule.list.get();
+			async getRule(){
+				const res = await this.$API.system.rule.list.get({
+					appid: this.appId
+				});
 				this.rule.list = res.data
 
 				//获取接口返回的之前选中的和半选的合并，处理过滤掉有叶子节点的key
 				this.rule.checked = [
-					"system", "user", "user.add", "user.edit", "user.del", "directive.edit", "other", "directive"
+					// "system", "user", "user.add", "user.edit", "user.del", "directive.edit", "other", "directive"
 				]
 				this.$nextTick(() => {
 					let filterKeys = this.rule.checked.filter(key => this.$refs.rule.getNode(key).isLeaf)
