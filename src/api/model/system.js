@@ -6,8 +6,8 @@ export default {
 		list: {
 			url: `${config.API_URL}/admin/system/appList`,
 			name: "应用列表",
-			get: async function(){
-				return await http.get(this.url);
+			get: async function(data={}){
+				return await http.get(this.url, data);
 			}
 		},
 		edit: {

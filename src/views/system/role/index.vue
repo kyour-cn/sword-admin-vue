@@ -13,6 +13,9 @@
 				</div>
 			</div>
 		</el-header>
+		<el-header style="height: auto;">
+			<sc-select-filter v-if="selectedApp" :data="filterData" :selected-values="selectedApp" :label-width="80" @on-change="filterChange"></sc-select-filter>
+		</el-header>
 		<el-main class="nopadding">
 			<scTable ref="table" :apiObj="apiObj" row-key="id" @selection-change="selectionChange" stripe>
 				<el-table-column type="selection" width="50"></el-table-column>
@@ -60,12 +63,14 @@
 <script>
 	import saveDialog from './save'
 	import permissionDialog from './permission'
+	import scSelectFilter from "@/components/scSelectFilter";
 
 	export default {
 		name: 'role',
 		components: {
 			saveDialog,
-			permissionDialog
+			permissionDialog,
+			scSelectFilter
 		},
 		data() {
 			return {
@@ -77,24 +82,47 @@
 				selection: [],
 				search: {
 					keyword: null
-				}
+				},
+				appList: [],
+				selectedApp: 0,
+				filterData: [
+					{
+						title: "所属应用",
+						key: "id",
+						multiple: false,
+						options: [
+							// {
+							// 	label: "全部",
+							// 	value: ""
+							// },
+						]
+					}
+				],
 			}
 		},
 		mounted() {
-			// this.getList()
+			this.getApp()
 		},
 		methods: {
-		  	async getList(){
-				let res = await this.$API.system.role.list.get()
-				console.log(res);
-				let data = res.data.rows
-				const newData =[]
-				data.forEach(ele =>{
-					let val = ele;
-					val.status=val.status==1?true:false
-					newData.push(val);
+
+			async getApp() {
+				const res = await this.$API.system.app.list.get({
+					pageSize: 50
+				});
+				this.appList = res.data.rows;
+				this.selectedApp = res.data.rows[0].id;
+
+				//初始化筛选器
+				res.data.rows.forEach(item => {
+					this.filterData[0].options.push({
+						label: item.name,
+						value: item.id
+					})
 				})
-				console.log(newData)
+
+			},
+			filterChange(data) {
+				this.selectedApp = data.id
 			},
 			//添加
 			add(){

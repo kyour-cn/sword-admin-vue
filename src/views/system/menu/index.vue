@@ -66,8 +66,7 @@ export default {
                 }
             },
             menuFilterText: "",
-			appList: [
-			],
+			appList: [],
 			selectedApp: 0
         }
     },
@@ -88,7 +87,9 @@ export default {
     methods: {
 
 		async getApp() {
-			var res = await this.$API.system.app.list.get();
+			const res = await this.$API.system.app.list.get({
+				pageSize: 50
+			});
 			this.appList = res.data.rows;
 			this.selectedApp = res.data.rows[0].id;
 		},
