@@ -7,7 +7,7 @@
 			</div>
 			<div class="right-panel">
 				<div class="right-panel-search">
-					<el-input v-model="search.keyword" placeholder="角色名称" clearable></el-input>
+					<el-input v-model="search.keyword" placeholder="角色名称" clearable @clear="clearSearch"></el-input>
 					<el-button type="primary" icon="el-icon-search" @click="upsearch"></el-button>
 				</div>
 			</div>
@@ -211,6 +211,12 @@
 				this.$refs.table.upData({
 					appid: this.selectedApp,
 					name:this.search.keyword
+				}, 1)
+			},
+			// 删除搜索
+			clearSearch(){
+				this.$refs.table.reload({
+					appid: this.selectedApp,
 				}, 1)
 			},
 			//根据ID获取树结构
