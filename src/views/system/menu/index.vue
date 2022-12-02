@@ -105,7 +105,7 @@ export default {
         },
         //树点击
         menuClick(data, node) {
-            var pid = node.level == 1 ? undefined : node.parent.data.id;
+            var pid = node.level === 1 ? undefined : node.parent.data.id;
             this.$refs.save.setData(data, pid, this.selectedApp)
             this.$refs.main.$el.scrollTop = 0
         },
@@ -122,8 +122,8 @@ export default {
         },
         //增加
         async add(node, data) {
-            var newMenuName = "未命名" + newMenuIndex++;
-            let newMenuData = {
+			const newMenuName = "未命名" + newMenuIndex++;
+			let newMenuData = {
                 parentId: data ? data.id : "",
                 name: newMenuName,
                 path: "",
@@ -135,40 +135,40 @@ export default {
 				appid: this.selectedApp
             }
             this.menuloading = true
-            var res = await this.$API.system.menu.edit.post(newMenuData)
-            this.menuloading = false
-            newMenuData = res.data
+			const res = await this.$API.system.menu.edit.post(newMenuData);
+			this.menuloading = false
+            newMenuData.id = res.data.id
 
             this.$refs.menu.append(newMenuData, node)
             this.$refs.menu.setCurrentKey(newMenuData.id)
-            var pid = node ? node.data.id : ""
-            this.$refs.save.setData(newMenuData, pid)
+			const pid = node ? node.data.id : "";
+			this.$refs.save.setData(newMenuData, pid)
         },
         //删除菜单
         async delMenu() {
-            var CheckedNodes = this.$refs.menu.getCheckedNodes()
-            if (CheckedNodes.length == 0) {
+			const CheckedNodes = this.$refs.menu.getCheckedNodes();
+			if (CheckedNodes.length === 0) {
                 this.$message.warning("请选择需要删除的项")
                 return false;
             }
 
-            var confirm = await this.$confirm('确认删除已选择的菜单吗？', '提示', {
+            const confirm = await this.$confirm('确认删除已选择的菜单吗？', '提示', {
                 type: 'warning',
                 confirmButtonText: '删除',
                 confirmButtonClass: 'el-button--danger'
             }).catch(() => { })
-            if (confirm != 'confirm') {
+            if (confirm !== 'confirm') {
                 return false
             }
 
             this.menuloading = true
-            var reqData = {
-                ids: CheckedNodes.map(item => item.id)
-            }
-            var res = await this.$API.system.menu.delete.post(reqData)
-            this.menuloading = false
+			const reqData = {
+				ids: CheckedNodes.map(item => item.id)
+			};
+			const res = await this.$API.system.menu.delete.post(reqData);
+			this.menuloading = false
 
-            if (res.code == 0) {
+            if (res.code === 0) {
                 CheckedNodes.forEach(item => {
                     var node = this.$refs.menu.getNode(item)
                     if (node.isCurrent) {
