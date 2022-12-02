@@ -11,7 +11,7 @@
 				<el-input v-model="form.realname" placeholder="请输入完整的真实姓名" clearable></el-input>
 			</el-form-item>
 			<el-form-item label="手机号" prop="mobile">
-				<el-input v-model="form.mobile" placeholder="请输入手机号" clearable></el-input>
+				<el-input v-model="form.mobile" placeholder="请输入手机号" maxlength="11" clearable></el-input>
 			</el-form-item>
 			<el-form-item label="是否有效" prop="status">
 				<el-switch v-model="form.status" :active-value="true" :inactive-value="false"></el-switch>
@@ -25,8 +25,8 @@
 				</el-form-item>
 			</template>
 			<template v-if="mode=='edit'">
-				<el-form-item label="修改密码" prop="password">
-					<el-input type="password" v-model="form.password" clearable show-password></el-input>
+				<el-form-item label="修改密码" >
+					<el-input type="password" v-model="changePassword" clearable show-password></el-input>
 				</el-form-item>
 			</template>
 			<el-form-item label="确认角色" prop="role_name">
@@ -47,6 +47,15 @@ import roleSelect from "@/components/system/roleSelect";
 		emits: ['success', 'closed','reloadData'],
 		components:{roleSelect},
 		data() {
+			const checkMobile = (rule, value, callback) => {
+				// 手机号正则表达式
+				const regMobile = /^(13[0-9]|14[5|7]|15[0|1|2|3|4|5|6|7|8|9]|18[0|1|2|3|5|6|7|8|9])\d{8}$/
+				if (regMobile.test(value)) {
+					// 合法的手机号
+					return callback()
+				}
+				callback(new Error('请输入合法的手机号'))
+			}
 			return {
 				mode: "add",
 				titleMap: {
@@ -59,15 +68,17 @@ import roleSelect from "@/components/system/roleSelect";
 				//表单数据
 				form: {
 					id:"",
-					username: "aa",
+					username: "",
 					// avatar: "",
-					realname: "aa",
+					realname: "",
 					status:true,
-					password: 'aa',
-					password2:"aa",
-					mobile:'18328560757',
+					password: '',
+					password2:"",
+					mobile:'',
 					role:undefined,
 				},
+				// 修改密码
+				changePassword:'',
 				//验证规则
 				rules: {
 					avatar:[
@@ -80,7 +91,8 @@ import roleSelect from "@/components/system/roleSelect";
 						{required: true, message: '请输入真实姓名'}
 					],
 					mobile: [
-						{required: true, message: '请输入手机号'}
+						{required: true, message: '请输入手机号'},
+						{validator: checkMobile, trigger: 'blur'}
 					],
 					password: [
 						{required: true, message: '请输入登录密码'},
@@ -135,11 +147,16 @@ import roleSelect from "@/components/system/roleSelect";
 					if (valid) {
 						this.isSaveing = true;
 						let {username,realname,status,password,mobile,role,id} = this.form
+						let {changePassword} = this
 						let res;
 						if(this.mode == 'add'){
 							 res = await this.$API.system.user.edit.post({username,realname,status,password,mobile,role});
 						}else{
-							 res = await this.$API.system.user.edit.post({id,username,realname,status,password,mobile,role});
+							if(changePassword){
+								res = await this.$API.system.user.edit.post({id,username,realname,status,password:changePassword,mobile,role});
+							}else{
+								res = await this.$API.system.user.edit.post({id,username,realname,status,password,mobile,role});
+							}
 						}
 						this.isSaveing = false;
 						if(res.code === 0){
