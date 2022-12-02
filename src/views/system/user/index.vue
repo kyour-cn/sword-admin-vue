@@ -27,7 +27,7 @@
 					<el-table-column label="登录账号" prop="username" width="150" sortable='custom' column-key="filterUserName" :filters="[{text: '系统账号', value: '1'}, {text: '普通账号', value: '0'}]"></el-table-column>
 					<el-table-column label="姓名" prop="realname" width="150" sortable='custom'></el-table-column>
 					<el-table-column label="手机号" prop="mobile" width="150" sortable='custom'></el-table-column>
-					<el-table-column label="所属角色" prop="groupName" width="200" sortable='custom'></el-table-column>
+					<el-table-column label="所属角色" prop="role_name" width="200" sortable='custom'></el-table-column>
 					<el-table-column label="加入时间" prop="login_time" width="170" sortable='custom'></el-table-column>
 					<el-table-column label="操作" fixed="right" align="right" width="160">
 						<template #default="scope">

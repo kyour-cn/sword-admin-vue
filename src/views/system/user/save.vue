@@ -24,8 +24,8 @@
 					<el-input type="password" v-model="form.password2" clearable show-password></el-input>
 				</el-form-item>
 			</template>
-			<el-form-item label="确认角色" prop="role">
-				<roleSelect @onChange="change" />
+			<el-form-item label="确认角色" prop="role_name">
+				<roleSelect @onChange="change" :placeholder="form.role_name" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -157,6 +157,9 @@ import roleSelect from "@/components/system/roleSelect";
 				this.form.status = data.status === 1?true : false
 				this.form.mobile = data.mobile
 				this.form.role = data.role
+				this.form.role_name = data.role_name
+
+				console.log(this.form)
 				//可以和上面一样单个注入，也可以像下面一样直接合并进去
 				//Object.assign(this.form, data)
 			}
