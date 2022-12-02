@@ -4,7 +4,7 @@
 
 		<el-card shadow="never" header="角色选择">
 
-			<roleSelect @onChange="change" />
+			<roleSelect @onChange="change" :placeholder="roleName" />
 
 		</el-card>
 	</el-main>
@@ -20,6 +20,7 @@ export default {
 	},
 	data() {
 		return {
+			roleName: "66666"
 		}
 	},
 	methods: {

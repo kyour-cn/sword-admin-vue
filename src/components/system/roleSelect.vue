@@ -5,6 +5,7 @@
 		:table-width="state.tableWidth"
 		clearable
 		collapse-tags
+		:placeholder="placeholder"
 		collapse-tags-tooltip
 		:props="state.props"
 		@change="onChange"
@@ -37,6 +38,7 @@ export default {
 	name: "roleSelect",
 	props: {
 		tableWidth: Number,
+		placeholder: { type: String, default: "请选择" }
 	},
 	setup(props, {emit}) {
 		const state = reactive({

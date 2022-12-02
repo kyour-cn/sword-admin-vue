@@ -8,6 +8,9 @@ axios.defaults.baseURL = ''
 
 axios.defaults.timeout = sysConfig.TIMEOUT
 
+axios.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+
 // HTTP request 拦截器
 axios.interceptors.request.use(
 	(config) => {
