@@ -101,6 +101,20 @@ export default {
 			get: async function(params){
 				return await http.get(this.url, params);
 			}
+		},
+		edit: {
+			url: `${config.API_URL}/admin/system/editUser`,
+			name: "编辑用户",
+			post: async function(data={}){
+				return await http.post(this.url, data);
+			}
+		},
+		delete: {
+			url: `${config.API_URL}/admin/system/deleteUser`,
+			name: "删除用户",
+			post: async function(data={}){
+				return await http.post(this.url, data);
+			}
 		}
 	},
 	// dic: {

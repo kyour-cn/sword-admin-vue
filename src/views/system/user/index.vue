@@ -28,7 +28,7 @@
 					<el-table-column label="姓名" prop="realname" width="150" sortable='custom'></el-table-column>
 					<el-table-column label="手机号" prop="mobile" width="150" sortable='custom'></el-table-column>
 					<el-table-column label="所属角色" prop="groupName" width="200" sortable='custom'></el-table-column>
-					<el-table-column label="加入时间" prop="date" width="170" sortable='custom'></el-table-column>
+					<el-table-column label="加入时间" prop="login_time" width="170" sortable='custom'></el-table-column>
 					<el-table-column label="操作" fixed="right" align="right" width="160">
 						<template #default="scope">
 							<el-button-group>
@@ -48,7 +48,7 @@
 		</el-container>
 	</el-container>
 
-	<save-dialog v-if="dialog.save" ref="saveDialog" @success="handleSuccess" @closed="dialog.save=false"></save-dialog>
+	<save-dialog v-if="dialog.save" ref="saveDialog" @reloadData="reloadData"  @success="handleSuccess" @closed="dialog.save=false"></save-dialog>
 
 </template>
 
@@ -81,9 +81,13 @@
 			}
 		},
 		mounted() {
-			this.getGroup()
+			// this.getGroup()
 		},
 		methods: {
+			// 子组件刷新数据
+			reloadData(){
+				this.$refs.table.reload();
+			},
 			//添加
 			add(){
 				this.dialog.save = true
@@ -107,9 +111,9 @@
 			},
 			//删除
 			async table_del(row, index){
-				var reqData = {id: row.id}
-				var res = await this.$API.demo.post.post(reqData);
-				if(res.code == 200){
+				var reqData = {ids: row.id}
+				var res = await this.$API.system.user.delete.post(reqData);
+				if(res.code == 0){
 					//这里选择刷新整个表格 OR 插入/编辑现有表格数据
 					this.$refs.table.tableData.splice(index, 1);
 					this.$message.success("删除成功")
@@ -121,17 +125,23 @@
 			async batch_del(){
 				this.$confirm(`确定删除选中的 ${this.selection.length} 项吗？`, '提示', {
 					type: 'warning'
-				}).then(() => {
+				}).then(async () => {
 					const loading = this.$loading();
-					this.selection.forEach(item => {
-						this.$refs.table.tableData.forEach((itemI, indexI) => {
-							if (item.id === itemI.id) {
-								this.$refs.table.tableData.splice(indexI, 1)
-							}
+					const ids =this.selection.map( ele => ele.id )
+					var res = await this.$API.system.user.delete.post({ids});
+					if(res.code === 0){
+						this.selection.forEach(item => {
+							this.$refs.table.tableData.forEach((itemI, indexI) => {
+								if (item.id === itemI.id) {
+									this.$refs.table.tableData.splice(indexI, 1)
+								}
+							})
 						})
-					})
-					loading.close();
-					this.$message.success("操作成功")
+						loading.close();
+						this.$message.success("操作成功")
+					}else{
+						this.$alert(res.message, "提示", {type: 'error'})
+					}
 				}).catch(() => {
 
 				})

@@ -1,14 +1,20 @@
 <template>
 	<el-dialog :title="titleMap[mode]" v-model="visible" :width="500" destroy-on-close @closed="$emit('closed')">
 		<el-form :model="form" :rules="rules" :disabled="mode=='show'" ref="dialogForm" label-width="100px" label-position="left">
-			<el-form-item label="头像" prop="avatar">
-				<sc-upload v-model="form.avatar" title="上传头像"></sc-upload>
+<!--			<el-form-item label="头像" prop="avatar">-->
+<!--				<sc-upload v-model="form.avatar" title="上传头像"></sc-upload>-->
+<!--			</el-form-item>-->
+			<el-form-item label="登录账号" prop="username">
+				<el-input v-model="form.username" placeholder="用于登录系统" clearable></el-input>
 			</el-form-item>
-			<el-form-item label="登录账号" prop="userName">
-				<el-input v-model="form.userName" placeholder="用于登录系统" clearable></el-input>
+			<el-form-item label="姓名" prop="realname">
+				<el-input v-model="form.realname" placeholder="请输入完整的真实姓名" clearable></el-input>
 			</el-form-item>
-			<el-form-item label="姓名" prop="name">
-				<el-input v-model="form.name" placeholder="请输入完整的真实姓名" clearable></el-input>
+			<el-form-item label="手机号" prop="mobile">
+				<el-input v-model="form.mobile" placeholder="请输入手机号" clearable></el-input>
+			</el-form-item>
+			<el-form-item label="是否有效" prop="status">
+				<el-switch v-model="form.status" :active-value="true" :inactive-value="false"></el-switch>
 			</el-form-item>
 			<template v-if="mode=='add'">
 				<el-form-item label="登录密码" prop="password">
@@ -18,13 +24,8 @@
 					<el-input type="password" v-model="form.password2" clearable show-password></el-input>
 				</el-form-item>
 			</template>
-			<el-form-item label="所属部门" prop="dept">
-				<el-cascader v-model="form.dept" :options="depts" :props="deptsProps" clearable style="width: 100%;"></el-cascader>
-			</el-form-item>
-			<el-form-item label="所属角色" prop="group">
-				<el-select v-model="form.group" multiple filterable style="width: 100%">
-					<el-option v-for="item in groups" :key="item.id" :label="item.label" :value="item.id"/>
-				</el-select>
+			<el-form-item label="确认角色" prop="role">
+				<roleSelect @onChange="change" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -35,8 +36,10 @@
 </template>
 
 <script>
+import roleSelect from "@/components/system/roleSelect";
 	export default {
-		emits: ['success', 'closed'],
+		emits: ['success', 'closed','reloadData'],
+		components:{roleSelect},
 		data() {
 			return {
 				mode: "add",
@@ -50,22 +53,28 @@
 				//表单数据
 				form: {
 					id:"",
-					userName: "",
-					avatar: "",
-					name: "",
-					dept: "",
-					group: []
+					username: "aa",
+					// avatar: "",
+					realname: "aa",
+					status:true,
+					password: 'aa',
+					password2:"aa",
+					mobile:'18328560757',
+					role:undefined
 				},
 				//验证规则
 				rules: {
 					avatar:[
 						{required: true, message: '请上传头像'}
 					],
-					userName: [
+					username: [
 						{required: true, message: '请输入登录账号'}
 					],
-					name: [
+					realname: [
 						{required: true, message: '请输入真实姓名'}
+					],
+					mobile: [
+						{required: true, message: '请输入手机号'}
 					],
 					password: [
 						{required: true, message: '请输入登录密码'},
@@ -86,11 +95,8 @@
 							}
 						}}
 					],
-					dept: [
-						{required: true, message: '请选择所属部门'}
-					],
-					group: [
-						{required: true, message: '请选择所属角色', trigger: 'change'}
+					status: [
+						{required: true, message: '请选择当前状态'}
 					]
 				},
 				//所需数据选项
@@ -99,17 +105,11 @@
 					value: "id",
 					multiple: true,
 					checkStrictly: true
-				},
-				depts: [],
-				deptsProps: {
-					value: "id",
-					checkStrictly: true
 				}
 			}
 		},
 		mounted() {
-			this.getGroup()
-			this.getDept()
+
 		},
 		methods: {
 			//显示
@@ -118,24 +118,26 @@
 				this.visible = true;
 				return this
 			},
-			//加载树数据
-			async getGroup(){
-				var res = await this.$API.system.role.list.get();
-				this.groups = res.data.rows;
-			},
-			async getDept(){
-				var res = await this.$API.system.dept.list.get();
-				this.depts = res.data;
+			//值变化
+			change(val){
+				// this.$message('change事件，返回详情查看控制台')
+				this.form.role = val.id
 			},
 			//表单提交方法
 			submit(){
 				this.$refs.dialogForm.validate(async (valid) => {
 					if (valid) {
 						this.isSaveing = true;
-						var res = await this.$API.demo.post.post(this.form);
+						let {username,realname,status,password,mobile,role,id} = this.form
+						let res;
+						if(this.mode == 'add'){
+							 res = await this.$API.system.user.edit.post({username,realname,status,password,mobile,role});
+						}else{
+							 res = await this.$API.system.user.edit.post({id,username,realname,status,password,mobile,role});
+						}
 						this.isSaveing = false;
-						if(res.code == 200){
-							this.$emit('success', this.form, this.mode)
+						if(res.code === 0){
+							this.$emit('reloadData')
 							this.visible = false;
 							this.$message.success("操作成功")
 						}else{
@@ -149,12 +151,12 @@
 			//表单注入数据
 			setData(data){
 				this.form.id = data.id
-				this.form.userName = data.userName
+				this.form.realname = data.realname
 				this.form.avatar = data.avatar
-				this.form.name = data.name
-				this.form.group = data.group
-				this.form.dept = data.dept
-
+				this.form.username = data.username
+				this.form.status = data.status === 1?true : false
+				this.form.mobile = data.mobile
+				this.form.role = data.role
 				//可以和上面一样单个注入，也可以像下面一样直接合并进去
 				//Object.assign(this.form, data)
 			}
