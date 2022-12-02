@@ -126,6 +126,7 @@
 
 			},
 			filterChange(data) {
+				console.log(data,'click data')
 				this.selectedApp = data.id
 				this.$refs.table.upData({
 					appid: this.selectedApp
@@ -207,7 +208,10 @@
 			},
 			//搜索
 			upsearch(){
-
+				this.$refs.table.upData({
+					appid: this.selectedApp,
+					name:this.search.keyword
+				}, 1)
 			},
 			//根据ID获取树结构
 			filterTree(id){
