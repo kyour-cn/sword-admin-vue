@@ -37,7 +37,7 @@
 				userType: 'admin',
 				form: {
 					user: "admin",
-					password: "admin",
+					password: "123456",
 					autologin: false
 				},
 				rules: {
@@ -55,10 +55,10 @@
 			userType(val){
 				if(val == 'admin'){
 					this.form.user = 'admin'
-					this.form.password = 'admin'
+					this.form.password = '123456'
 				}else if(val == 'user'){
 					this.form.user = 'user'
-					this.form.password = 'user'
+					this.form.password = '123456'
 				}
 			}
 		},
@@ -68,17 +68,17 @@
 		methods: {
 			async login(){
 
-				var validate = await this.$refs.loginForm.validate().catch(()=>{})
+				const validate = await this.$refs.loginForm.validate().catch(()=>{})
 				if(!validate){ return false }
 
 				this.islogin = true
-				var data = {
+				const data = {
 					username: this.form.user,
 					password: this.$TOOL.crypto.MD5(this.form.password)
-				}
+				};
 				//获取token
-				var user = await this.$API.auth.token.post(data)
-				if(user.code == 0){
+				const user = await this.$API.auth.token.post(data);
+				if(user.code === 0){
 					this.$TOOL.cookie.set("TOKEN", user.data.token, {
 						expires: this.form.autologin? 24*60*60 : 0
 					})
@@ -89,9 +89,9 @@
 					return false
 				}
 				//获取菜单
-				var menu = await this.$API.auth.menu.get()
-				if(menu.code == 0){
-					if(menu.data.menu.length==0){
+				const menu = await this.$API.auth.menu.get();
+				if(menu.code === 0){
+					if(menu.data.menu.length === 0){
 						this.islogin = false
 						this.$alert("当前用户无任何菜单权限，请联系系统管理员", "无权限访问", {
 							type: 'error',
@@ -100,7 +100,7 @@
 						return false
 					}
 					this.$TOOL.data.set("MENU", menu.data.menu)
-					this.$TOOL.data.set("PERMISSIONS", menu.data.permissions)
+					// this.$TOOL.data.set("PERMISSIONS", menu.data.permissions)
 				}else{
 					this.islogin = false
 					this.$message.warning(menu.message)
@@ -110,7 +110,7 @@
 				this.$router.replace({
 					path: '/'
 				})
-				this.$message.success("Login Success 登录成功")
+				this.$message.success("登录成功")
 				this.islogin = false
 			},
 		}
