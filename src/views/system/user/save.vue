@@ -24,9 +24,15 @@
 					<el-input type="password" v-model="form.password2" clearable show-password></el-input>
 				</el-form-item>
 			</template>
+			<template v-if="mode=='edit'">
+				<el-form-item label="修改密码" prop="password">
+					<el-input type="password" v-model="form.password" clearable show-password></el-input>
+				</el-form-item>
+			</template>
 			<el-form-item label="确认角色" prop="role_name">
 				<roleSelect @onChange="change" :placeholder="form.role_name" />
 			</el-form-item>
+
 		</el-form>
 		<template #footer>
 			<el-button @click="visible=false" >取 消</el-button>
@@ -60,7 +66,7 @@ import roleSelect from "@/components/system/roleSelect";
 					password: 'aa',
 					password2:"aa",
 					mobile:'18328560757',
-					role:undefined
+					role:undefined,
 				},
 				//验证规则
 				rules: {
