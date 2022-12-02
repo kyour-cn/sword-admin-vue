@@ -112,6 +112,10 @@
 				this.appList = res.data.rows;
 				this.selectedApp = res.data.rows[0].id;
 
+				this.$refs.table.upData({
+					appid: this.selectedApp
+				}, 1)
+
 				//初始化筛选器
 				res.data.rows.forEach(item => {
 					this.filterData[0].options.push({
@@ -123,6 +127,9 @@
 			},
 			filterChange(data) {
 				this.selectedApp = data.id
+				this.$refs.table.upData({
+					appid: this.selectedApp
+				}, 1)
 			},
 			//添加
 			add(){
