@@ -1,17 +1,14 @@
 <template>
-	<el-dialog :title="titleMap[mode]" v-model="visible" :width="500" destroy-on-close @closed="$emit('closed')">
-		<el-form :model="form" :rules="rules" :disabled="mode=='show'" ref="dialogForm" label-width="100px" label-position="left">
+	<el-dialog v-model="visible" :title="titleMap[mode]" :width="500" destroy-on-close @closed="$emit('closed')">
+		<el-form ref="dialogForm" :disabled="mode=='show'" :model="form" :rules="rules" label-position="left" label-width="100px">
 			<el-form-item label="角色名称" prop="label">
-				<el-input v-model="form.label" clearable></el-input>
-			</el-form-item>
-			<el-form-item label="角色别名" prop="alias">
-				<el-input v-model="form.alias" clearable></el-input>
+				<el-input v-model="form.name" clearable></el-input>
 			</el-form-item>
 			<el-form-item label="排序" prop="sort">
-				<el-input-number v-model="form.sort" controls-position="right" :min="1" style="width: 100%;"></el-input-number>
+				<el-input-number v-model="form.sort" :min="1" controls-position="right" style="width: 100%;"></el-input-number>
 			</el-form-item>
 			<el-form-item label="是否有效" prop="status">
-				<el-switch v-model="form.status" active-value="1" inactive-value="0"></el-switch>
+				<el-switch v-model="form.status" :active-value="true" :inactive-value="false"></el-switch>
 			</el-form-item>
 			<el-form-item label="备注" prop="remark">
 				<el-input v-model="form.remark" clearable type="textarea"></el-input>
@@ -19,7 +16,7 @@
 		</el-form>
 		<template #footer>
 			<el-button @click="visible=false" >取 消</el-button>
-			<el-button v-if="mode!='show'" type="primary" :loading="isSaveing" @click="submit()">保 存</el-button>
+			<el-button v-if="mode!='show'" :loading="isSaveing" type="primary" @click="submit()">保 存</el-button>
 		</template>
 	</el-dialog>
 </template>
@@ -40,8 +37,7 @@
 				//表单数据
 				form: {
 					id:"",
-					label: "",
-					alias: "",
+					name: "",
 					sort: 1,
 					status: 1,
 					remark: ""
@@ -51,11 +47,8 @@
 					sort: [
 						{required: true, message: '请输入排序', trigger: 'change'}
 					],
-					label: [
+					name: [
 						{required: true, message: '请输入角色名称'}
-					],
-					alias: [
-						{required: true, message: '请输入角色别名'}
 					]
 				}
 			}
@@ -77,9 +70,9 @@
 						return false
 					}
 					this.isSaveing = true;
-					const data =this.form
-					data.status=data.status?1:0;
-					const res = await this.$API.system.app.edit.post(data);
+					const data = this.form
+					data.status= data.status?1:0;
+					const res = await this.$API.system.role.edit.post(data);
 					this.isSaveing = false;
 					this.visible=false;
 					if(res.code === 0){
@@ -93,11 +86,11 @@
 			//表单注入数据
 			setData(data){
 				this.form.id = data.id
-				this.form.label = data.label
-				this.form.alias = data.alias
-				this.form.sort = data.sort
-				this.form.status = data.status
+				this.form.name = data.name
 				this.form.remark = data.remark
+				this.form.status = data.status===1?true:false
+				this.form.sort = data.sort
+				console.log(this.form)
 
 				//可以和上面一样单个注入，也可以像下面一样直接合并进去
 				//Object.assign(this.form, data)

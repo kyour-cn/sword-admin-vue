@@ -68,14 +68,14 @@
 			},
 			//表单提交方法
 			async submit(){
-				var valid = await this.$refs.dialogForm.validate().catch(() => {})
+				const valid = await this.$refs.dialogForm.validate().catch(() => {})
 				if(!valid){
 					return false
 				}
 				this.isSaveing = true;
 				const data =this.form
 				data.status=data.status?1:0;
-				const res = await this.$API.system.role.edit.post(data);
+				const res = await this.$API.system.app.edit.post(data);
 				this.isSaveing = false;
 				this.visible=false;
 				if(res.code === 0){

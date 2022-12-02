@@ -126,9 +126,9 @@
 			},
 			//删除
 			async table_del(row){
-				var reqData = {id: row.id}
-				var res = await this.$API.demo.post.post(reqData);
-				if(res.code == 200){
+				const reqData = {ids: row.id}
+				const res = await this.$API.system.role.del.post(reqData);
+				if(res.code === 0){
 					this.$refs.table.refresh()
 					this.$message.success("删除成功")
 				}else{
@@ -137,16 +137,24 @@
 			},
 			//批量删除
 			async batch_del(){
-				this.$confirm(`确定删除选中的 ${this.selection.length} 项吗？如果删除项中含有子集将会被一并删除`, '提示', {
-					type: 'warning'
-				}).then(() => {
-					const loading = this.$loading();
-					this.$refs.table.refresh()
-					loading.close();
-					this.$message.success("操作成功")
-				}).catch(() => {
+				var confirmRes = await this.$confirm(`确定删除选中的 ${this.selection.length} 项吗？`, '提示', {
+					type: 'warning',
+					confirmButtonText: '删除',
+					confirmButtonClass: 'el-button--danger'
+				}).catch(() => {})
 
-				})
+				if(!confirmRes){
+					return false
+				}
+
+				var ids = this.selection.map(v => v.id)
+				var res = await this.$API.system.role.del.post({ids});
+				if(res.code === 0){
+					this.$refs.table.removeKeys(ids)
+					this.$message.success("操作成功")
+				}else {
+					this.$alert(res.message, "提示", {type: 'error'})
+				}
 			},
 			//表格选择后回调事件
 			selectionChange(selection){

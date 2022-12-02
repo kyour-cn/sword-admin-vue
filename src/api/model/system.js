@@ -23,7 +23,7 @@ export default {
 			post: async function(data={}){
 				return await http.post(this.url, data);
 			}
-		},
+		}
 	},
 	rule: {
 		list: {
@@ -63,6 +63,13 @@ export default {
 				return await http.post(this.url, data);
 			}
 		},
+		del: {
+			url: `${config.API_URL}/admin/system/deleteRole`,
+			name: "删除应用",
+			post: async function(data={}){
+				return await http.post(this.url, data);
+			}
+		}
 	},
 	menu: {
 		list: {
