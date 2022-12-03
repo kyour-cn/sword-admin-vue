@@ -52,7 +52,7 @@ let newMenuIndex = 1;
 import save from './save'
 
 export default {
-    name: "settingMenu",
+    name: "menu",
     components: {
         save
     },
@@ -79,9 +79,7 @@ export default {
 		}
     },
     mounted() {
-
 		this.getApp();
-
         this.getMenu();
     },
     methods: {

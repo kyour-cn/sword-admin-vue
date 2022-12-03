@@ -45,7 +45,7 @@
 	import info from './info'
 
 	export default {
-		name: 'listCrud',
+		name: 'app',
 		components: {
 			saveDialog,
 			info

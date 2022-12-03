@@ -52,7 +52,7 @@ let newRuleIndex = 1;
 import save from './save'
 
 export default {
-	name: "settingRule",
+	name: "rule",
 	components: {
 		save
 	},

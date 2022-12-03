@@ -102,7 +102,7 @@
 
 <script>
 	export default {
-		name: 'system',
+		name: 'setting',
 		data() {
 			return {
 				sys: {
