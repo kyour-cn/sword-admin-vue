@@ -29,7 +29,7 @@
 					<el-input type="password" v-model="changePassword" clearable show-password></el-input>
 				</el-form-item>
 			</template>
-			<el-form-item label="确认角色" prop="role_name">
+			<el-form-item label="用户角色" prop="role_name">
 				<roleSelect @onChange="change" :placeholder="form.role_name" />
 			</el-form-item>
 
@@ -75,7 +75,7 @@ import roleSelect from "@/components/system/roleSelect";
 					password: '',
 					password2:"",
 					mobile:'',
-					role:undefined,
+					role_id:undefined,
 				},
 				// 修改密码
 				changePassword:'',
@@ -139,23 +139,23 @@ import roleSelect from "@/components/system/roleSelect";
 			//值变化
 			change(val){
 				// this.$message('change事件，返回详情查看控制台')
-				this.form.role = val.id
+				this.form.role_id = val.id
 			},
 			//表单提交方法
 			submit(){
 				this.$refs.dialogForm.validate(async (valid) => {
 					if (valid) {
 						this.isSaveing = true;
-						let {username,realname,status,password,mobile,role,id} = this.form
+						let {username,realname,status,password,mobile,role_id,id} = this.form
 						let {changePassword} = this
 						let res;
 						if(this.mode == 'add'){
-							 res = await this.$API.system.user.edit.post({username,realname,status,password,mobile,role});
+							 res = await this.$API.system.user.edit.post({username,realname,status,password,mobile,role_id});
 						}else{
 							if(changePassword){
-								res = await this.$API.system.user.edit.post({id,username,realname,status,password:changePassword,mobile,role});
+								res = await this.$API.system.user.edit.post({id,username,realname,status,password:changePassword,mobile,role_id});
 							}else{
-								res = await this.$API.system.user.edit.post({id,username,realname,status,password,mobile,role});
+								res = await this.$API.system.user.edit.post({id,username,realname,status,password,mobile,role_id});
 							}
 						}
 						this.isSaveing = false;
@@ -179,7 +179,7 @@ import roleSelect from "@/components/system/roleSelect";
 				this.form.username = data.username
 				this.form.status = data.status === 1?true : false
 				this.form.mobile = data.mobile
-				this.form.role = data.role
+				this.form.role_id = data.role_id
 				this.form.role_name = data.role_name
 
 				console.log(this.form)
