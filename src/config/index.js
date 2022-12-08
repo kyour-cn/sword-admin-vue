@@ -6,7 +6,7 @@ const DEFAULT_CONFIG = {
 	DASHBOARD_URL: "/dashboard",
 
 	//版本号
-	APP_VER: "1.6.6",
+	APP_VER: "1.0.0",
 
 	//内核版本号
 	CORE_VER: "1.6.6",
@@ -24,7 +24,9 @@ const DEFAULT_CONFIG = {
 	TOKEN_PREFIX: "Bearer ",
 
 	//追加其他头
-	HEADERS: {},
+	HEADERS: {
+		'X-Requested-With': 'XMLHttpRequest', //Ajax标识
+	},
 
 	//请求是否开启缓存
 	REQUEST_CACHE: false,

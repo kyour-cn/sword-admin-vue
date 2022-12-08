@@ -10,13 +10,14 @@
 			<scTable ref="table" :apiObj="list.apiObj" row-key="id" @selection-change="selectionChange" stripe>
 				<el-table-column type="selection" width="50"></el-table-column>
 				<el-table-column label="名称" prop="name" width="180"></el-table-column>
+				<el-table-column label="应用key" prop="key" width="180"></el-table-column>
+				<el-table-column label="备注信息" prop="remark" ></el-table-column>
 				<el-table-column label="状态" prop="status" width="60">
 					<template #default="scope">
 						<sc-status-indicator v-if="scope.row.status" type="success"></sc-status-indicator>
 						<sc-status-indicator v-if="!scope.row.status" pulse type="danger"></sc-status-indicator>
 					</template>
 				</el-table-column>
-				<el-table-column label="备注信息" prop="remark" ></el-table-column>
 				<el-table-column label="操作" fixed="right" align="right" width="300">
 					<template #default="scope">
 						<el-button plain size="small" @click="table_show(scope.row)">查看</el-button>
@@ -91,7 +92,6 @@
 			async table_del(row, index){
 				var reqData = {ids: row.id}
 				var res = await this.$API.system.app.del.post(reqData);
-				console.log(res,"res");
 				if(res.code === 0){
 					this.$refs.table.removeIndex(index)
 					this.$message.success("删除成功")

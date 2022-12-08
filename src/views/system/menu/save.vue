@@ -73,21 +73,6 @@
                 </el-form>
 
             </el-col>
-<!--            <el-col :lg="12" class="apilist">-->
-<!--                <h2>接口权限</h2>-->
-<!--                <sc-form-table v-model="form.apiList" :addTemplate="apiListAddTemplate" placeholder="暂无匹配接口权限">-->
-<!--                    <el-table-column prop="code" label="标识" width="150">-->
-<!--                        <template #default="scope">-->
-<!--                            <el-input v-model="scope.row.code" placeholder="请输入内容"></el-input>-->
-<!--                        </template>-->
-<!--                    </el-table-column>-->
-<!--                    <el-table-column prop="url" label="Api url">-->
-<!--                        <template #default="scope">-->
-<!--                            <el-input v-model="scope.row.url" placeholder="请输入内容"></el-input>-->
-<!--                        </template>-->
-<!--                    </el-table-column>-->
-<!--                </sc-form-table>-->
-<!--            </el-col>-->
         </template>
     </el-row>
 
@@ -113,7 +98,7 @@ export default {
                 path: "",
                 component: "",
                 redirect: "",
-				sort: 0,
+				sort: "0",
                 meta: {
                     title: "",
                     icon: "",
@@ -125,25 +110,15 @@ export default {
                 },
                 apiList: []
             },
+            checkPid: 0, //用于比对是否修改上级
             menuOptions: [],
             menuProps: {
                 value: 'id',
                 label: 'title',
                 checkStrictly: true
             },
-            predefineColors: [
-                '#ff4500',
-                '#ff8c00',
-                '#ffd700',
-                '#67C23A',
-                '#00ced1',
-                '#409EFF',
-                '#c71585'
-            ],
-            rules: [],
-            apiListAddTemplate: {
-                code: "",
-                url: ""
+            rules: {
+                required: false //避免表单验证错误
             },
             loading: false,
 			appId: 0
@@ -182,7 +157,10 @@ export default {
             this.loading = false
             if (res.code == 0) {
                 this.$message.success("保存成功")
-                this.$emit('refreshMenu')
+                if(this.checkPid !== this.form.parentId){
+                    this.$emit('refreshMenu')
+                    this.checkPid = this.form.parentId;
+                }
             } else {
                 this.$message.warning(res.message)
             }
@@ -192,6 +170,7 @@ export default {
             this.form = data
             this.form.apiList = data.apiList || []
             this.form.parentId = pid
+            this.checkPid = pid
 			this.form.appid = appId
         }
     }

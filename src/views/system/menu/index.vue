@@ -80,7 +80,6 @@ export default {
     },
     mounted() {
 		this.getApp();
-        this.getMenu();
     },
     methods: {
 
@@ -90,6 +89,7 @@ export default {
 			});
 			this.appList = res.data.rows;
 			this.selectedApp = res.data.rows[0].id;
+            this.getMenu();
 		},
 
         //加载树数据

@@ -1,5 +1,5 @@
 <template>
-	<el-container>
+    <el-container>
 		<el-container>
 			<el-header>
 				<div class="left-panel">
@@ -10,8 +10,8 @@
 				</div>
 				<div class="right-panel">
 					<div class="right-panel-search">
-						<el-input v-model="search.keyword" placeholder="登录账号 / 姓名" clearable></el-input>
-						<el-button type="primary" icon="el-icon-search" @click="upsearch"></el-button>
+            <el-input v-model="search.keyword" placeholder="登录账号 / 姓名" @clear="clearSearch" clearable></el-input>
+            <el-button type="primary" icon="el-icon-search" @click="upsearch"></el-button>
 					</div>
 				</div>
 			</el-header>
@@ -71,8 +71,8 @@
 				apiObj: this.$API.system.user.list,
 				selection: [],
 				search: {
-					keyword: null
-				}
+          keyword: null
+        }
 			}
 		},
 		watch: {
@@ -175,6 +175,10 @@
 			upsearch(){
 				this.$refs.table.upData(this.search)
 			},
+      // 清除搜索
+      clearSearch(){
+        this.$refs.table.upData(this.search)
+      },
 			//本地更新数据
 			handleSuccess(data, mode){
 				if(mode=='add'){

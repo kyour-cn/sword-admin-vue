@@ -60,16 +60,16 @@ export default {
 				path: "",
 				sort: 0,
 			},
+            checkPid: 0, //用于比对是否修改上级
 			ruleOptions: [],
 			ruleProps: {
 				value: 'id',
 				label: 'name',
 				checkStrictly: true
 			},
-			apiListAddTemplate: {
-				code: "",
-				url: ""
-			},
+            rules: {
+                required: false //避免表单验证错误
+            },
 			loading: false,
 			appId: 0
 		}
@@ -107,7 +107,10 @@ export default {
 			this.loading = false
 			if (res.code === 0) {
 				this.$message.success("保存成功")
-				this.$emit('refreshRule')
+                if(this.checkPid !== this.form.parentId){
+                    this.$emit('refreshRule')
+                    this.checkPid = this.form.parentId;
+                }
 			} else {
 				this.$message.warning(res.message)
 			}
@@ -116,6 +119,7 @@ export default {
 		setData(data, pid, appId) {
 			this.form = data
 			this.form.parentId = pid
+            this.checkPid = pid
 			this.form.appid = appId
 		}
 	}

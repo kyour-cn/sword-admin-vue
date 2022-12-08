@@ -10,11 +10,11 @@
         <el-icon-full-screen />
       </el-icon>
     </div>
-    <div class="tasks panel-item" @click="tasks">
-      <el-icon>
-        <el-icon-sort />
-      </el-icon>
-    </div>
+<!--    <div class="tasks panel-item" @click="tasks">-->
+<!--      <el-icon>-->
+<!--        <el-icon-sort />-->
+<!--      </el-icon>-->
+<!--    </div>-->
     <div class="msg panel-item" @click="showMsg">
       <el-badge :hidden="msgList.length == 0" :value="msgList.length" class="badge" type="danger">
         <el-icon>
@@ -75,20 +75,20 @@
     <search @success="searchVisible = false"></search>
   </el-dialog>
 
-  <el-drawer v-model="tasksVisible" :size="450" title="任务中心" custom-class="drawerBG" destroy-on-close>
-    <tasks></tasks>
-  </el-drawer>
+<!--  <el-drawer v-model="tasksVisible" :size="450" title="任务中心" custom-class="drawerBG" destroy-on-close>-->
+<!--    <tasks></tasks>-->
+<!--  </el-drawer>-->
 
 </template>
 
 <script>
 import search from './search.vue'
-import tasks from './tasks.vue'
+// import tasks from './tasks.vue'
 
 export default {
   components: {
     search,
-    tasks
+    // tasks
   },
   data() {
     return {
