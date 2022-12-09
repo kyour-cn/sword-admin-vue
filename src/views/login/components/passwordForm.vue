@@ -104,14 +104,10 @@ export default {
                     expires: this.form.autologin? 24*60*60 : 0
                 })
                 this.$TOOL.data.set("USER_INFO", user.data.userInfo)
-            }else if(user.code === 2){
-                this.islogin = false
-                this.$message.warning(user.message)
-                this.onRefresh()
-                return false
             }else{
                 this.islogin = false
                 this.$message.warning(user.message)
+                this.onRefresh()
                 return false
             }
             //获取菜单
