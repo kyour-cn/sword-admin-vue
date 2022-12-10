@@ -120,12 +120,11 @@
 			this.$TOOL.cookie.remove("TOKEN")
 			this.$TOOL.data.remove("USER_INFO")
 			this.$TOOL.data.remove("MENU")
-			this.$TOOL.data.remove("PERMISSIONS")
+			// this.$TOOL.data.remove("PERMISSIONS")
 			this.$TOOL.data.remove("grid")
 			this.$store.commit("clearViewTags")
 			this.$store.commit("clearKeepLive")
 			this.$store.commit("clearIframeList")
-			console.log('%c SCUI %c Gitee: https://gitee.com/lolicode/scui', 'background:#666;color:#fff;border-radius:3px;', '')
 		},
 		methods: {
 			configDark(){

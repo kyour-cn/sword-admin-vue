@@ -18,7 +18,7 @@
         <el-form-item prop="code">
             <el-input v-model="form.code" prefix-icon="el-icon-picture" clearable placeholder="图形验证码">
                 <template #append>
-                    <img @click="onRefresh" style="height: 30px;" :src="codeSrc+ '?key=' + codeNumber" alt="">
+                    <img @click="onRefresh" style="height: 30px;" :src="codeSrc+ '?number=' + codeNumber" alt="">
                 </template>
             </el-input>
         </el-form-item>
@@ -78,9 +78,22 @@ export default {
         }
     },
     mounted() {
-
+        this.onEnterSubmit();
     },
     methods: {
+        onEnterSubmit(type = false){
+            if(type){
+                window.removeEventListener('keydown',this.keydownCall)
+            }else{
+                window.addEventListener('keydown', this.keydownCall)
+            }
+        },
+        keydownCall(event){
+            if (event.code == 'Enter' || event.code == 'NumpadEnter') {
+                //调用登录事件方法
+                this.login();
+            }
+        },
         onRefresh(){
             this.codeNumber = Math.round(Math.random()*(100000-999999)+999999) //验证码编号
         },
@@ -132,6 +145,10 @@ export default {
             this.$router.replace({
                 path: '/'
             })
+
+            //移除Enter监听
+            this.onEnterSubmit();
+
             this.$message.success("登录成功")
             this.islogin = false
         },
