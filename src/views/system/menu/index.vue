@@ -3,20 +3,22 @@
         <el-aside width="300px" v-loading="menuloading">
             <el-container>
                 <el-header>
-					<el-select v-model="selectedApp">
-						<el-option
-							v-for="item in appList"
-							:key="item.id"
-							:label="item.name"
-							:value="item.id"
-						/>
-					</el-select>
-                    <el-input placeholder="输入关键字过滤" v-model="menuFilterText" clearable></el-input>
+                    <el-select v-model="selectedApp">
+                        <el-option
+                            v-for="item in appList"
+                            :key="item.id"
+                            :label="item.name"
+                            :value="item.id"
+                        />
+                    </el-select>
+                    <el-input placeholder="输入关键字过滤" v-model="menuFilterText" clearable style="margin-left: 10px;"></el-input>
                 </el-header>
                 <el-main class="nopadding">
-                    <el-tree ref="menu" class="menu" node-key="id" :data="menuList" :props="menuProps" draggable highlight-current
-                        :expand-on-click-node="false" check-strictly show-checkbox :filter-node-method="menuFilterNode"
-                        @node-click="menuClick" @node-drop="nodeDrop">
+                    <el-tree ref="menu" class="menu" node-key="id" :data="menuList" :props="menuProps" draggable
+                             highlight-current
+                             :expand-on-click-node="false" check-strictly show-checkbox
+                             :filter-node-method="menuFilterNode"
+                             @node-click="menuClick" @node-drop="nodeDrop">
 
                         <template #default="{node, data}">
                             <span class="custom-tree-node el-tree-node__label">
@@ -25,10 +27,10 @@
                                 </span>
                                 <span class="do">
                                     <el-icon @click.stop="add(node, data)">
-                                        <el-icon-plus />
+                                        <el-icon-plus/>
                                     </el-icon>
                                 </span>
-                            </span>
+                          </span>
                         </template>
 
                     </el-tree>
@@ -66,38 +68,38 @@ export default {
                 }
             },
             menuFilterText: "",
-			appList: [],
-			selectedApp: 0
+            appList: [],
+            selectedApp: 0
         }
     },
     watch: {
         menuFilterText(val) {
             this.$refs.menu.filter(val);
         },
-		selectedApp(){
-			this.getMenu();
-		}
+        selectedApp() {
+            this.getMenu();
+        }
     },
     mounted() {
-		this.getApp();
+        this.getApp();
+        this.getMenu();
     },
     methods: {
 
-		async getApp() {
-			const res = await this.$API.system.app.list.get({
-				pageSize: 50
-			});
-			this.appList = res.data.rows;
-			this.selectedApp = res.data.rows[0].id;
-            this.getMenu();
-		},
+        async getApp() {
+            const res = await this.$API.system.app.list.get({
+                pageSize: 50
+            });
+            this.appList = res.data.rows;
+            this.selectedApp = res.data.rows[0].id;
+        },
 
         //加载树数据
         async getMenu() {
             this.menuloading = true
             var res = await this.$API.system.menu.list.get({
-				appid: this.selectedApp
-			});
+                appid: this.selectedApp
+            });
             this.menuloading = false
             this.menuList = res.data;
         },
@@ -120,8 +122,8 @@ export default {
         },
         //增加
         async add(node, data) {
-			const newMenuName = "未命名" + newMenuIndex++;
-			let newMenuData = {
+            const newMenuName = "未命名" + newMenuIndex++;
+            let newMenuData = {
                 parentId: data ? data.id : "",
                 name: newMenuName,
                 path: "",
@@ -130,22 +132,22 @@ export default {
                     title: newMenuName,
                     type: "menu"
                 },
-				appid: this.selectedApp
+                appid: this.selectedApp
             }
             this.menuloading = true
-			const res = await this.$API.system.menu.edit.post(newMenuData);
-			this.menuloading = false
+            const res = await this.$API.system.menu.edit.post(newMenuData);
+            this.menuloading = false
             newMenuData.id = res.data.id
 
             this.$refs.menu.append(newMenuData, node)
             this.$refs.menu.setCurrentKey(newMenuData.id)
-			const pid = node ? node.data.id : "";
-			this.$refs.save.setData(newMenuData, pid)
+            const pid = node ? node.data.id : "";
+            this.$refs.save.setData(newMenuData, pid)
         },
         //删除菜单
         async delMenu() {
-			const CheckedNodes = this.$refs.menu.getCheckedNodes();
-			if (CheckedNodes.length === 0) {
+            const CheckedNodes = this.$refs.menu.getCheckedNodes();
+            if (CheckedNodes.length === 0) {
                 this.$message.warning("请选择需要删除的项")
                 return false;
             }
@@ -154,17 +156,17 @@ export default {
                 type: 'warning',
                 confirmButtonText: '删除',
                 confirmButtonClass: 'el-button--danger'
-            }).catch(() => { })
+            }).catch(() => {})
             if (confirm !== 'confirm') {
                 return false
             }
 
             this.menuloading = true
-			const reqData = {
-				ids: CheckedNodes.map(item => item.id)
-			};
-			const res = await this.$API.system.menu.delete.post(reqData);
-			this.menuloading = false
+            const reqData = {
+                ids: CheckedNodes.map(item => item.id)
+            };
+            const res = await this.$API.system.menu.delete.post(reqData);
+            this.menuloading = false
 
             if (res.code === 0) {
                 CheckedNodes.forEach(item => {

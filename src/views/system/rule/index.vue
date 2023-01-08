@@ -11,7 +11,7 @@
 							:value="item.id"
 						/>
 					</el-select>
-					<el-input placeholder="输入关键字过滤" v-model="ruleFilterText" clearable></el-input>
+					<el-input placeholder="输入关键字过滤" v-model="ruleFilterText" clearable style="margin-left: 10px;"></el-input>
 				</el-header>
 				<el-main class="nopadding">
 					<el-tree ref="rule" class="rule" node-key="id" :data="ruleList" :props="ruleProps" draggable highlight-current

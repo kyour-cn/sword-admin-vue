@@ -12,7 +12,7 @@ const DEFAULT_CONFIG = {
 	CORE_VER: "1.6.6",
 
 	//接口地址
-	API_URL: "http://admin.kyour.cn",
+	API_URL: "//localhost:8188",
 
 	//请求超时
 	TIMEOUT: 10000,

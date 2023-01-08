@@ -42,6 +42,7 @@
 
 <script>
 import config from "@/config"
+import auth from "@/api/model/auth";
 export default {
     data() {
         return {
@@ -63,7 +64,7 @@ export default {
             islogin: false,
 
             codeNumber: Math.round(Math.random()*(100000-999999)+999999), //验证码编号
-            codeSrc: config.API_URL + '/admin/Login/captcha',
+            codeSrc: config.API_URL + auth.captchaImg
         }
     },
     watch:{
@@ -77,23 +78,19 @@ export default {
             }
         }
     },
-    mounted() {
-        this.onEnterSubmit();
-    },
-    methods: {
-        onEnterSubmit(type = false){
-            if(type){
-                window.removeEventListener('keydown',this.keydownCall)
-            }else{
-                window.addEventListener('keydown', this.keydownCall)
-            }
-        },
-        keydownCall(event){
-            if (event.code == 'Enter' || event.code == 'NumpadEnter') {
-                //调用登录事件方法
-                this.login();
-            }
-        },
+	created() {
+		this.enterLogin();
+	},
+	methods: {
+		enterLogin(){
+			window.addEventListener('keydown', this.keydownFn)
+		},
+		keydownFn(e){
+			if (this.$route.path == '/login' && (e.code == 'Enter' || e.code == 'NumpadEnter')) {
+				//调用登录事件方法
+				this.login();
+			}
+		},
         onRefresh(){
             this.codeNumber = Math.round(Math.random()*(100000-999999)+999999) //验证码编号
         },
@@ -145,13 +142,10 @@ export default {
             this.$router.replace({
                 path: '/'
             })
-
-            //移除Enter监听
-            this.onEnterSubmit();
-
             this.$message.success("登录成功")
             this.islogin = false
-        },
+			window.removeEventListener('keydown',this.keydownFn)
+		},
     }
 }
 </script>
