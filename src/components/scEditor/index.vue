@@ -64,10 +64,10 @@
 		data() {
 			return {
 				init: {
-					language_url: 'tinymce/langs/zh_CN.js',
+					language_url: 'admin/tinymce/langs/zh_CN.js',
 					language: 'zh_CN',
-					skin_url: 'tinymce/skins/ui/oxide',
-					content_css: "tinymce/skins/content/default/content.css",
+					skin_url: 'admin/tinymce/skins/ui/oxide',
+					content_css: "admin/tinymce/skins/content/default/content.css",
 					menubar: false,
 					statusbar: true,
 					plugins: this.plugins,
