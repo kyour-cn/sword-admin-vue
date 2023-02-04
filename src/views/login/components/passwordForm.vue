@@ -1,5 +1,5 @@
 <template>
-	<el-form ref="loginForm" :model="form" :rules="rules" label-width="0" size="large">
+	<el-form ref="loginForm" :model="form" :rules="rules" label-width="0" size="large" @keyup.enter="login">
 		<el-form-item prop="user">
 			<el-input v-model="form.user" prefix-icon="el-icon-user" clearable :placeholder="$t('login.userPlaceholder')">
 <!--				<template #append>-->
@@ -78,19 +78,7 @@ export default {
             }
         }
     },
-	created() {
-		this.enterLogin();
-	},
 	methods: {
-		enterLogin(){
-			window.addEventListener('keydown', this.keydownFn)
-		},
-		keydownFn(e){
-			if (this.$route.path == '/login' && (e.code == 'Enter' || e.code == 'NumpadEnter')) {
-				//调用登录事件方法
-				this.login();
-			}
-		},
         onRefresh(){
             this.codeNumber = Math.round(Math.random()*(100000-999999)+999999) //验证码编号
         },
@@ -144,7 +132,6 @@ export default {
             })
             this.$message.success("登录成功")
             this.islogin = false
-			window.removeEventListener('keydown',this.keydownFn)
 		},
     }
 }

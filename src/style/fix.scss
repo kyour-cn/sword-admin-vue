@@ -81,3 +81,24 @@
 /* 覆盖tinymce样式 */
 .sceditor .tox-tinymce {border: 1px solid #DCDFE6;border-radius: 0;}
 body .tox-tinymce-aux {z-index: 5700;}
+
+/* SwordAdmin样式 */
+.el-menu-item {
+	border-radius: 3px;
+	margin: 5px;
+	padding: 0 5px;
+	height: 40px !important;
+}
+.el-menu-item.is-active {
+	background: #eaeced !important;
+}
+html.dark .el-menu-item.is-active {
+	background: #d9d9d9 !important;
+}
+/* 功能页面区域样式 */
+.adminui-main > .el-container {
+	margin: 10px;
+	height: calc(100% - 20px);
+	border-radius: 3px;
+	border: 1px solid #eeeeee;
+}

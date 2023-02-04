@@ -124,6 +124,14 @@ export default {
 			get: async function(params){
 				return await http.get(this.url, params);
 			}
+		},
+		menu: {
+			url: `${config.API_URL}/app/admin/system/logPageInfo`,
+			name: "日志列表信息",
+			get: async function (params) {
+				return await http.get(this.url, params);
+			}
 		}
-	},
+	}
+
 }
