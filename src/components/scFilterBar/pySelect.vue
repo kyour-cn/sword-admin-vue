@@ -9,16 +9,17 @@
 
 <template>
 	<el-select v-bind="$attrs" :filter-method="filterMethod" @visible-change="visibleChange">
-		<el-option v-for="field in optionsList" :key="field.value" :label="field.label" :value="field"></el-option>
+		<el-option v-for="field in optionsList" :key="field.value" :label="field.label" :value="field" :disabled="isDisabled(field.value)"></el-option>
 	</el-select>
 </template>
 
 <script>
-	import pinyin from 'pinyin-match'
+    import pinyin from 'pinyin-match'
 
 	export default {
 		props: {
-			options: { type: Array, default: () => [] }
+			options: { type: Array, default: () => [] },
+			filter: { type: Array, default: () => [] }
 		},
 		data() {
 			return {
@@ -44,6 +45,13 @@
 			visibleChange(isopen){
 				if(isopen){
 					this.optionsList = this.optionsList_
+				}
+			},
+			isDisabled(key){
+				if(this.filter.find(item => item.field.value == key && !item.field.repeat)){
+					return true
+				}else{
+					return false
 				}
 			}
 		}
