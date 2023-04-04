@@ -76,7 +76,7 @@ export default {
 				const data = this.form
 				data.status = data.status ? 1 : 0;
 				// 带上父组件传下来的selectedApp
-				data.appid = this.selectedApp
+				data.app_id = this.selectedApp
 				const res = await this.$API.system.role.edit.post(data);
 				this.isSaveing = false;
 				this.visible = false;

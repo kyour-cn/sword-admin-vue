@@ -96,7 +96,7 @@ export default {
         async getMenu() {
             this.menuloading = true
             var res = await this.$API.system.menu.list.get({
-                appid: this.selectedApp
+                app_id: this.selectedApp
             });
             this.menuloading = false
             this.menuList = res.data;
@@ -130,7 +130,7 @@ export default {
                     title: newMenuName,
                     type: "menu"
                 },
-                appid: this.selectedApp
+                app_id: this.selectedApp
             }
             this.menuloading = true
             const res = await this.$API.system.menu.edit.post(newMenuData);

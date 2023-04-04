@@ -53,7 +53,7 @@ export default {
 		return {
 			form: {
 				id: "",
-				appid: 0,
+				app_id: 0,
 				parentId: "",
 				name: "",
 				alias: "",
@@ -120,7 +120,7 @@ export default {
 			this.form = data
 			this.form.parentId = pid
             this.checkPid = pid
-			this.form.appid = appId
+			this.form.app_id = appId
 		}
 	}
 }

@@ -95,7 +95,7 @@ export default {
 		async getRule() {
 			this.loading = true
 			const res = await this.$API.system.rule.list.get({
-				appid: this.selectedApp
+				app_id: this.selectedApp
 			});
 			this.loading = false
 			this.ruleList = res.data;
@@ -124,7 +124,7 @@ export default {
 				parentId: data ? data.id : "",
 				name: newRuleName,
 				path: "",
-				appid: this.selectedApp
+				app_id: this.selectedApp
 			};
 			this.loading = true
 			const res = await this.$API.system.rule.edit.post(newRuleData);

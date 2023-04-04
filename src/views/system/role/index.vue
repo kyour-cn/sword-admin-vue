@@ -135,7 +135,7 @@ export default {
 			this.selectedApp = res.data.rows[0].id;
 
 			this.$refs.table.upData({
-				appid: this.selectedApp
+				app_id: this.selectedApp
 			}, 1)
 
 			//初始化筛选器
@@ -150,7 +150,7 @@ export default {
 		filterChange(data) {
 			this.selectedApp = data.id
 			this.$refs.table.upData({
-				appid: this.selectedApp
+				app_id: this.selectedApp
 			}, 1)
 		},
 		//添加
@@ -231,14 +231,14 @@ export default {
 		//搜索
 		upsearch() {
 			this.$refs.table.upData({
-				appid: this.selectedApp,
+				app_id: this.selectedApp,
 				name: this.search.keyword
 			}, 1)
 		},
 		// 删除搜索
 		clearSearch() {
 			this.$refs.table.reload({
-				appid: this.selectedApp,
+				app_id: this.selectedApp,
 			}, 1)
 		},
 		//根据ID获取树结构

@@ -68,7 +68,7 @@ export default {
 		},
 		async getRule() {
 			const res = await this.$API.system.rule.list.get({
-				appid: this.appId
+				app_id: this.appId
 			});
 			this.rule.list = res.data
 			this.$nextTick(() => {

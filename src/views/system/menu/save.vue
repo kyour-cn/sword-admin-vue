@@ -30,8 +30,8 @@
 						<el-input v-model="form.sort" clearable placeholder="菜单排序"></el-input>
 						<div class="el-form-item-msg">正序排列，数字越小越靠前</div>
 					</el-form-item>
-					<el-form-item label="权限ID" prop="rid">
-						<el-input v-model="form.rid" clearable placeholder="权限ID"></el-input>
+					<el-form-item label="权限ID" prop="rule_id">
+						<el-input v-model="form.rule_id" clearable placeholder="权限ID"></el-input>
 						<div class="el-form-item-msg">输入绑定的权限ID,若用户无绑定权限则不显示该菜单</div>
 					</el-form-item>
                     <el-form-item label="菜单图标" prop="meta.icon">
@@ -92,7 +92,7 @@ export default {
         return {
             form: {
                 id: "",
-				appid: 0,
+				app_id: 0,
                 parentId: "",
                 name: "",
                 path: "",
@@ -171,7 +171,7 @@ export default {
             this.form.apiList = data.apiList || []
             this.form.parentId = pid
             this.checkPid = pid
-			this.form.appid = appId
+			this.form.app_id = appId
         }
     }
 }
