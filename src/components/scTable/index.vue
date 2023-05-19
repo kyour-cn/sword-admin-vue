@@ -1,10 +1,10 @@
 <!--
  * @Descripttion: 数据表格组件
- * @version: 1.10
+ * @version: 1.11
  * @Author: sakuya
  * @Date: 2021年11月29日21:51:15
  * @LastEditors: sakuya
- * @LastEditTime: 2022年6月4日17:35:26
+ * @LastEditTime: 2023年3月2日10:43:35
 -->
 
 <template>
@@ -103,9 +103,9 @@
 			apiObj(){
 				this.tableParams = this.params;
 				this.refresh();
-            },
-            column(){
-                this.userColumn=this.column;
+			},
+			column(){
+				this.userColumn=this.column;
 			}
 		},
 		computed: {
@@ -187,6 +187,7 @@
 				try {
 					var res = await this.apiObj.get(reqData);
 				}catch(error){
+					this._clearData()
 					this.loading = false;
 					this.emptyText = error.statusText;
 					return false;
@@ -194,11 +195,13 @@
 				try {
 					var response = config.parseData(res);
 				}catch(error){
+					this._clearData()
 					this.loading = false;
 					this.emptyText = "数据格式错误";
 					return false;
 				}
 				if(response.code != config.successCode){
+					this._clearData()
 					this.loading = false;
 					this.emptyText = response.msg;
 				}else{
@@ -214,6 +217,10 @@
 				}
 				this.$refs.scTable.setScrollTop(0)
 				this.$emit('dataChange', res, this.tableData)
+			},
+			//清空数据
+			_clearData(){
+				this.tableData = []
 			},
 			//分页点击
 			paginationChange(){

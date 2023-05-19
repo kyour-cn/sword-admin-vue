@@ -1,10 +1,10 @@
 <!--
  * @Descripttion: 过滤器V2
- * @version: 2.6
+ * @version: 2.7
  * @Author: sakuya
  * @Date: 2021年7月30日14:48:41
  * @LastEditors: sakuya
- * @LastEditTime: 2023年2月7日09:46:45
+ * @LastEditTime: 2023年3月10日13:01:26
 -->
 
 <template>
@@ -134,7 +134,15 @@
 			filterObj(){
 				const obj = {}
 				this.filter.forEach((item) => {
-					obj[item.field.value] = this.showOperator ? `${item.value}${config.separator}${item.operator}` : `${item.value}`
+					if(this.showOperator){
+						var valueFormat = config.valueFormat.replace(/{key}/g, item.field.value)
+							valueFormat = valueFormat.replace(/{value}/g, item.value)
+							valueFormat = valueFormat.replace(/{separator}/g, config.separator)
+							valueFormat = valueFormat.replace(/{operator}/g, item.operator)
+						obj[valueFormat.split(':')[0]] = valueFormat.split(':')[1]
+					}else{
+						obj[item.field.value] = item.value
+					}
 				})
 				return obj
 			}

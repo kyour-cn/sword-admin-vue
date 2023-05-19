@@ -36,6 +36,8 @@ export default {
 	],
 	//过滤结果运算符的分隔符
 	separator: '|',
+	//返回值的格式'
+	valueFormat: '{key}:{value}{separator}{operator}',
 	//获取我的常用
 	getMy: function (name) {
 		return new Promise((resolve) => {
