@@ -208,7 +208,7 @@
 			},
 			//下拉框显示事件处理异步搜索
 			async remoteMethod(query, item){
-                if(!item.field.extend.request) {
+				if(!item.field.extend.request) {
 					return false;
 				}
 				if(query !== ''){

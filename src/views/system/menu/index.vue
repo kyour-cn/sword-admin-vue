@@ -14,12 +14,11 @@
                     <el-input placeholder="输入关键字过滤" v-model="menuFilterText" clearable style="margin-left: 10px;"></el-input>
                 </el-header>
                 <el-main class="nopadding">
-                    <el-tree ref="menu" class="menu" node-key="id" :data="menuList" :props="menuProps" draggable
-                             highlight-current
-                             :expand-on-click-node="false" check-strictly show-checkbox
-                             :filter-node-method="menuFilterNode"
-                             @node-click="menuClick" @node-drop="nodeDrop">
-
+                    <el-tree
+                        ref="menu" class="menu" node-key="id" :data="menuList" :props="menuProps" draggable
+                        highlight-current :expand-on-click-node="false" check-strictly show-checkbox
+                        :filter-node-method="menuFilterNode" @node-click="menuClick" @node-drop="nodeDrop"
+                    >
                         <template #default="{node, data}">
                             <span class="custom-tree-node">
                                 <span class="label">
@@ -76,6 +75,7 @@ export default {
         },
         selectedApp() {
             this.getMenu();
+            localStorage.setItem("sys_menu_app_id", this.selectedApp);
         }
     },
     mounted() {
@@ -85,11 +85,15 @@ export default {
     methods: {
 
         async getApp() {
-            const res = await this.$API.system.app.list.get({
-                pageSize: 50
-            });
+            const res = await this.$API.system.app.list.get();
             this.appList = res.data.rows;
-            this.selectedApp = res.data.rows[0].id;
+
+            //读取缓存 sys_menu_app_id
+            const appId = localStorage.getItem("sys_menu_app_id");
+            if (appId)
+                this.selectedApp = Number(appId);
+            else
+                this.selectedApp = res.data.rows[0].id;
         },
 
         //加载树数据

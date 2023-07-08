@@ -75,12 +75,11 @@ export default {
 		},
 		selectedApp(){
 			this.getRule();
+      localStorage.setItem("sys_rule_app_id", this.selectedApp);
 		}
 	},
 	mounted() {
-
 		this.getApp();
-
 		this.getRule();
 	},
 	methods: {
@@ -88,8 +87,11 @@ export default {
 		async getApp() {
 			const res = await this.$API.system.app.list.get();
 			this.appList = res.data.rows;
-			this.selectedApp = res.data.rows[0].id;
-		},
+
+      //读取缓存 sys_rule_app_id
+      const appId = localStorage.getItem("sys_rule_app_id");
+      this.selectedApp = appId? Number(appId): res.data.rows[0].id
+    },
 
 		//加载树数据
 		async getRule() {

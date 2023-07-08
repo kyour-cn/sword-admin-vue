@@ -1,10 +1,14 @@
 import {defineConfig} from 'vite'
+import vueSetupExtend from 'vite-plugin-vue-setup-extend-plus'
 import path from 'path'
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [vue()],
+    plugins: [
+        vue(),
+        vueSetupExtend()
+    ],
     hmr: true,
     resolve: {
         // https://cn.vitejs.dev/config/#resolve-alias
@@ -22,14 +26,14 @@ export default defineConfig({
         port: 2800,
         host: true,
         open: true,
-        proxy: {
-            // https://cn.vitejs.dev/config/#server-proxy
-            // '/api': {
-            //   target: 'https://www.fastmock.site/mock/5039c4361c39a7e3252c5b55971f1bd3/api',
-            //   changeOrigin: true,
-            //   rewrite: (p) => p.replace(/^\/api/, '')
-            // }
-        },
+        // proxy: {
+        //     // https://cn.vitejs.dev/config/#server-proxy
+        //     '/api': {
+        //       target: 'https://xxx.com/api',
+        //       changeOrigin: true,
+        //       rewrite: (p) => p.replace(/^\/api/, '')
+        //     }
+        // },
     },
     css: {
         postcss: {

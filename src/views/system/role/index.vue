@@ -14,28 +14,31 @@
 			</div>
 		</el-header>
 		<el-header style="height: auto;">
-			<sc-select-filter v-if="selectedApp" :data="filterData" :selected-values="selectedApp" :label-width="80"
-							  @on-change="filterChange"></sc-select-filter>
+			<sc-select-filter
+          v-if="selectedApp"
+          :data="filterData"
+          :selected-values="selectedApp"
+          :label-width="80"
+          @on-change="filterChange"
+      />
 		</el-header>
 		<el-main class="nopadding">
 			<scTable ref="table" :apiObj="apiObj" row-key="id" @selection-change="selectionChange" stripe>
 				<el-table-column type="selection" width="50"></el-table-column>
 				<el-table-column label="#" type="index" width="50"></el-table-column>
 				<el-table-column label="角色名称" prop="name" width="150"></el-table-column>
-				<!--				<el-table-column label="别名" prop="alias" width="200"></el-table-column>-->
 				<el-table-column label="排序" prop="sort" width="80"></el-table-column>
-				<!--				<el-table-column label="状态" prop="status" width="80">-->
-				<!--					<template #default="scope">-->
-				<!--						<el-switch  v-model="scope.row.status" @change="changeSwitch($event, scope.row)" :loading="scope.row.$switch_status" active-value="1" inactive-value="0"></el-switch>-->
-				<!--					</template>-->
-				<!--				</el-table-column>-->
 				<el-table-column label="状态" prop="status" width="60">
 					<template #default="scope">
 						<sc-status-indicator v-if="scope.row.status" type="success"></sc-status-indicator>
 						<sc-status-indicator v-if="!scope.row.status" pulse type="danger"></sc-status-indicator>
 					</template>
 				</el-table-column>
-				<el-table-column label="创建时间" prop="create_time" width="180"></el-table-column>
+        <el-table-column label="创建时间" prop="create_time" width="170">
+            <template #default="{row,$index}">
+                {{ $TOOL.dateFormat(row.create_time * 1000) }}
+            </template>
+        </el-table-column>
 				<el-table-column label="备注" prop="remark" min-width="150"></el-table-column>
 				<el-table-column label="操作" fixed="right" align="right" width="300">
 					<template #default="scope">
@@ -57,7 +60,6 @@
 						</el-button-group>
 					</template>
 				</el-table-column>
-
 			</scTable>
 		</el-main>
 	</el-container>
@@ -65,7 +67,7 @@
 	<save-dialog
         v-if="dialog.save"
         ref="saveDialog"
-        :selectedApp="selectedApp"
+        :selectedApp="selectedApp.id"
         @success="handleSaveSuccess"
         @closed="dialog.save=false"
     ></save-dialog>
@@ -73,7 +75,7 @@
 	<permission-dialog
         v-if="dialog.permission"
         ref="permissionDialog"
-        :app-id="selectedApp"
+        :app-id="selectedApp.id"
         @getNewData="getNewData"
         @closed="dialog.permission=false"
     ></permission-dialog>
@@ -128,14 +130,19 @@ export default {
 			this.$refs.table.refresh()
 		},
 		async getApp() {
-			const res = await this.$API.system.app.list.get({
-				pageSize: 50
-			});
+			const res = await this.$API.system.app.list.get();
 			this.appList = res.data.rows;
-			this.selectedApp = res.data.rows[0].id;
+
+      //读取缓存 sys_role_app_id
+      const appId = localStorage.getItem("sys_role_app_id");
+      if (appId) {
+          this.selectedApp = this.appList.find(item => item.id === Number(appId))
+      } else {
+          this.selectedApp = res.data.rows[0];
+      }
 
 			this.$refs.table.upData({
-				app_id: this.selectedApp
+				app_id: this.selectedApp.id
 			}, 1)
 
 			//初始化筛选器
@@ -148,10 +155,11 @@ export default {
 
 		},
 		filterChange(data) {
-			this.selectedApp = data.id
+			this.selectedApp = data
 			this.$refs.table.upData({
-				app_id: this.selectedApp
+				app_id: this.selectedApp.id
 			}, 1)
+      localStorage.setItem("sys_role_app_id", this.selectedApp.id);
 		},
 		//添加
 		add() {
@@ -231,14 +239,14 @@ export default {
 		//搜索
 		upsearch() {
 			this.$refs.table.upData({
-				app_id: this.selectedApp,
+				app_id: this.selectedApp.id,
 				name: this.search.keyword
 			}, 1)
 		},
 		// 删除搜索
 		clearSearch() {
 			this.$refs.table.reload({
-				app_id: this.selectedApp,
+				app_id: this.selectedApp.id,
 			}, 1)
 		},
 		//根据ID获取树结构

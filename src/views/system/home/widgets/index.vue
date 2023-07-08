@@ -1,15 +1,14 @@
 <template>
+
 	<div :class="['widgets-home', customizing?'customizing':'']" ref="main">
+
+        <div class="widgets-actions">
+            <el-button v-if="customizing" type="primary" icon="el-icon-check" round @click="save">完成</el-button>
+            <el-button v-else type="primary" icon="el-icon-edit" round @click="custom">自定义</el-button>
+        </div>
+
 		<div class="widgets-content">
-			<div class="widgets-top">
-				<div class="widgets-top-title">
-					控制台
-				</div>
-				<div class="widgets-top-actions">
-					<el-button v-if="customizing" type="primary" icon="el-icon-check" round @click="save">完成</el-button>
-					<el-button v-else type="primary" icon="el-icon-edit" round @click="custom">自定义</el-button>
-				</div>
-			</div>
+
 			<div class="widgets" ref="widgets">
 				<div class="widgets-wrapper">
 					<div v-if="nowCompsList.length<=0" class="no-widgets">
@@ -194,7 +193,7 @@
 </script>
 
 <style scoped lang="scss">
-	.widgets-home {display: flex;flex-direction: row;flex: 1;height: 100%;}
+	.widgets-home {display: flex;flex-direction: row;flex: 1;height: 100%;position: relative;}
 	.widgets-content {flex: 1;overflow: auto;overflow-x:hidden;padding:15px;}
 	.widgets-aside {width: 360px;background: #fff;box-shadow: 0 0 10px rgba(0,0,0,.1);position: relative;overflow: auto;}
 	.widgets-aside-title {font-size: 14px;display: flex;align-items: center;justify-content: center;}
@@ -202,8 +201,8 @@
 	.widgets-aside-close {font-size: 18px;width:30px;height: 30px;display: flex;align-items: center;justify-content: center;border-radius: 3px;cursor: pointer;}
 	.widgets-aside-close:hover {background: rgba(180,180,180,0.1);}
 
-	.widgets-top {margin-bottom: 15px;display: flex;justify-content: space-between;align-items: center;}
-	.widgets-top-title {font-size: 18px;font-weight: bold;}
+	//.widgets-top {margin-bottom: 15px;display: flex;justify-content: space-between;align-items: center;}
+	//.widgets-top-title {font-size: 18px;font-weight: bold;}
 
 	.widgets {transform-origin: top left;transition: transform .15s;}
 
@@ -251,5 +250,13 @@
 		.customizing .widgets-aside {width: 100%;position: absolute;top:50%;right:0;bottom:0;}
 		.customizing .widgets-wrapper {margin-right:0;}
 	}
+
+    .widgets-actions{
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        z-index: 999;
+        opacity: 0.8;
+    }
 
 </style>

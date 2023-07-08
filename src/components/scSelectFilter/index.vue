@@ -1,8 +1,8 @@
 <!--
  * @Descripttion: 分类筛选器
- * @version: 1.0
+ * @version: 1.1
  * @Author: sakuya
- * @Date: 2022年5月26日15:59:52
+ * @Date: 2023年5月19日23:20:52
  * @LastEditors:
  * @LastEditTime:
 -->
@@ -59,8 +59,12 @@
 		mounted() {
 			//默认赋值
 			this.data.forEach(item => {
-				this.selected[item.key] = this.selectedValues[item.key] ||
-                (Array.isArray(item.options) && item.options.length) ? [item.options[0].value] : []
+				if (this.selectedValues[item.key]) {
+					this.selected[item.key] = [this.selectedValues[item.key]]
+				} else {
+					//默认选中第一个
+					this.selected[item.key] = (Array.isArray(item.options) && item.options.length) ? [item.options[0].value] : []
+				}
 			})
 		},
 		methods: {

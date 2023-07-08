@@ -1,24 +1,33 @@
 <template>
     <el-container>
         <el-aside width="220px">
-            <!--      show-checkbox-->
-            <el-tree ref="category" class="menu" node-key="label" :data="category"
-                     @node-click="test"
-                     :default-expanded-keys="['应用日志']"
-                     :default-checked-keys="['调试']"
-                     current-node-key="应用日志" :highlight-current="true" :expand-on-click-node="false"
-            >
-            </el-tree>
+            <el-tree
+                ref="category"
+                class="menu"
+                node-key="label"
+                :data="category"
+                @node-click="test"
+                :default-expanded-keys="['应用日志']"
+                :default-checked-keys="['调试']"
+                current-node-key="应用日志"
+                :highlight-current="true"
+                :expand-on-click-node="false"
+            />
         </el-aside>
         <el-container>
             <el-main class="nopadding">
                 <el-container>
                     <el-header>
                         <div class="left-panel">
-                            <el-date-picker @change="timeChange" v-model="date" format="YYYY-MM-DD HH:mm:ss"
-                                            type="datetimerange"
-                                            range-separator="至" start-placeholder="开始日期"
-                                            end-placeholder="结束日期"></el-date-picker>
+                            <el-date-picker
+                                v-model="date"
+                                format="YYYY-MM-DD HH:mm:ss"
+                                type="datetimerange"
+                                range-separator="至"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期"
+                                @change="timeChange"
+                            />
                         </div>
                         <div class="right-panel">
 
@@ -28,23 +37,11 @@
                         <scEcharts height="100%" width="100%" :option="logsChartOption"></scEcharts>
                     </el-header>
                     <el-main class="nopadding">
-                        <scTable ref="table" :apiObj="apiObj"
-                                 :params="{start_time:date?.[0] || null,end_time:date?.[1] || null}"
-                                 stripe
-                                 highlightCurrentRow @row-click="rowClick">
-                            <!--              <el-table-column label="级别" prop="level" width="60">-->
-                            <!--                <template #default="scope">-->
-                            <!--                  <el-icon v-if="scope.row.level_name=='error'" style="color: #F56C6C;">-->
-                            <!--                    <el-icon-circle-close-filled/>-->
-                            <!--                  </el-icon>-->
-                            <!--                  <el-icon v-if="scope.row.level_name=='warn'" style="color: #E6A23C;">-->
-                            <!--                    <el-icon-warning-filled/>-->
-                            <!--                  </el-icon>-->
-                            <!--                  <el-icon v-if="scope.row.level_name=='登录日志'" style="color: #409EFF;">-->
-                            <!--                    <el-icon-info-filled/>-->
-                            <!--                  </el-icon>-->
-                            <!--                </template>-->
-                            <!--              </el-table-column>-->
+                        <scTable
+                            ref="table" :apiObj="apiObj"
+                            :params="{start_time:date?.[0] || null,end_time:date?.[1] || null}"
+                            stripe
+                            highlightCurrentRow @row-click="rowClick">
                             <el-table-column label="ID" prop="id" width="180"></el-table-column>
                             <el-table-column label="名称" prop="level_name" width="150"></el-table-column>
                             <el-table-column label="标题 " prop="title" width="150"></el-table-column>
