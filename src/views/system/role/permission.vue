@@ -13,7 +13,7 @@
 				show-checkbox
 				:data="state.rule.list"
 				:default-expand-all="true"
-				:default-checked-keys="state.checkids"
+				:default-checked-keys="state.checkIds"
 				:props="state.rule.props"
 			/>
 		</div>
@@ -28,7 +28,7 @@
 
 <script setup>
 
-import {getCurrentInstance, onMounted, reactive, ref} from "vue";
+import {getCurrentInstance, reactive, ref} from "vue";
 
 const instance = getCurrentInstance();
 const properties = instance.appContext.config.globalProperties;
@@ -36,7 +36,7 @@ const properties = instance.appContext.config.globalProperties;
 const emit = defineEmits(["success", "closed", "getNewData"])
 
 const state = reactive({
-	checkids: [],
+	checkIds: [],
 	visible: false,
 	isSaveing: false,
 	row: {
@@ -59,6 +59,7 @@ const rule = ref(null)
 const open = (row) => {
 	state.row = row
 	state.visible = true;
+	getRule()
 }
 
 const submit = async () => {
@@ -85,22 +86,24 @@ const submit = async () => {
 }
 
 const getRule = async () => {
-	const res = await properties.$API.system.rule.list.get();
+	const res = await properties.$API.system.rule.list.get({
+		app_id: state.row.app_id
+	});
 	if (res.code === 0) {
 		state.rule.list = res.data
-		state.checkids = state.row.rules_checked.split(',')
+		state.checkIds = state.row.rules_checked.split(',')
 	} else {
 		await properties.$alert(res.message, "提示", {type: 'error'})
 	}
 }
 
-onMounted(() => {
-	getRule()
-})
+const setData = (data) => {
+	state.row = data
+}
 
 //暴露给父组件的方法
 defineExpose({
-	open
+	open, setData
 })
 
 </script>

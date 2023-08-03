@@ -16,7 +16,7 @@
 				</div>
 			</el-header>
 			<el-main class="nopadding">
-				<scTable ref="table" :apiObj="apiObj" @selection-change="selectionChange" stripe remoteSort remoteFilter>
+				<sc-table ref="table" :apiObj="apiObj" @selection-change="selectionChange" stripe remoteSort remoteFilter>
 					<el-table-column type="selection" width="50"></el-table-column>
 					<el-table-column label="ID" prop="id" width="80" sortable='custom'></el-table-column>
 					<el-table-column label="头像" width="80" column-key="filterAvatar" >
@@ -47,7 +47,7 @@
 						</template>
 					</el-table-column>
 
-				</scTable>
+				</sc-table>
 			</el-main>
 		</el-container>
 	</el-container>

@@ -86,11 +86,11 @@ export default {
 
 		async getApp() {
 			const res = await this.$API.system.app.list.get();
-			this.appList = res.data.rows;
+			this.appList = res.data.data;
 
       //读取缓存 sys_rule_app_id
       const appId = localStorage.getItem("sys_rule_app_id");
-      this.selectedApp = appId? Number(appId): res.data.rows[0].id
+      this.selectedApp = appId? Number(appId): res.data.data[0].id
     },
 
 		//加载树数据

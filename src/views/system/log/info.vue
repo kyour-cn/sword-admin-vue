@@ -1,62 +1,55 @@
 <template>
 
-    <el-main style="padding:0 20px;">
-        <el-descriptions :column="1" border size="small">
-            <el-descriptions-item label="请求接口">{{ data.url }}</el-descriptions-item>
-            <el-descriptions-item label="请求方法">{{ data.type }}</el-descriptions-item>
-            <el-descriptions-item label="状态代码">{{ data.code }}</el-descriptions-item>
-            <el-descriptions-item label="日志名">{{ data.name }}</el-descriptions-item>
-            <el-descriptions-item label="日志时间">{{ data.time }}</el-descriptions-item>
-        </el-descriptions>
-        <el-collapse v-model="activeNames" style="margin-top: 20px;">
-            <el-collapse-item title="常规" name="1">
-                <el-alert title="在没有配置的 DNS 服务器响应之后，名称 update-khd.2345.cc 的名称解析超时。"
-                          :type="typeMap[data.level]" :closable="false"></el-alert>
-            </el-collapse-item>
-            <el-collapse-item title="详细" name="2">
-                <div class="code">
-                    Request: {
-                    User-Agent: "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko)
-                    Chrome/86.0.4240.198 Safari/537.36"
-                    },
-                    Response: {
-                    Content-Type: "application/json; charset=utf-8",
-                    Date: "Fri, 25 Jun 2021 03:02:14 GMT",
-                    Server: "nginx/1.17.8"
-                    }
-                </div>
-            </el-collapse-item>
-        </el-collapse>
-    </el-main>
+	<el-main style="padding:0 20px;">
+		<el-descriptions :column="1" border size="small">
+			<el-descriptions-item label="标题">{{ data.title }}</el-descriptions-item>
+			<el-descriptions-item label="日志类型">{{ data.level_name }}</el-descriptions-item>
+			<el-descriptions-item label="请求来源">{{ data.request_source }}</el-descriptions-item>
+			<el-descriptions-item label="操作人">{{ data.request_user }} （{{ data.request_user_id }}）</el-descriptions-item>
+			<el-descriptions-item label="请求ip">{{ data.request_ip }}</el-descriptions-item>
+			<el-descriptions-item label="请求时间">{{ $TOOL.dateFormat(data.create_time * 1000) }}</el-descriptions-item>
+		</el-descriptions>
+		<el-collapse v-model="activeNames" style="margin-top: 20px;">
+			<el-collapse-item title="记录内容" name="1">
+				<div class="code">
+					{{data.value}}
+				</div>
+			</el-collapse-item>
+		</el-collapse>
+	</el-main>
 </template>
 
 <script>
 export default {
-    data() {
-        return {
-            data: {},
-            activeNames: ['1'],
-            typeMap: {
-                'info': "info",
-                'warn': "warning",
-                'error': "error"
-            }
-        }
-    },
-    methods: {
-        setData(data) {
-            this.data = data
-        }
-    }
+	data() {
+		return {
+			data: {},
+			activeNames: ['1'],
+			typeMap: {
+				'info': "info",
+				'warn': "warning",
+				'error': "error"
+			}
+		}
+	},
+	methods: {
+		setData(data) {
+			this.data = data
+		}
+	}
 }
 </script>
 
 <style scoped>
+:deep(.is-bordered-label) {
+	min-width: 6em;
+}
+
 .code {
-    background: #848484;
-    padding: 15px;
-    color: #fff;
-    font-size: 12px;
-    border-radius: 4px;
+	background: #848484;
+	padding: 15px;
+	color: #fff;
+	font-size: 12px;
+	border-radius: 4px;
 }
 </style>

@@ -31,6 +31,14 @@ const DEFAULT_CONFIG = {
 	//请求是否开启缓存
 	REQUEST_CACHE: false,
 
+	//传输数据是否开启加密
+	REQUEST_ENCRYPTION: false,
+
+	//是否开启响应数据加密
+	DATA_ENCRYPTION: false,
+	//加密密钥（AES-128-ECB）
+	DATA_ENCRYPTION_KEY: '707014142a4b4c5d',
+
 	//布局 默认：default | 通栏：header | 经典：menu | 功能坞：dock
 	//dock将关闭标签和面包屑栏
 	LAYOUT: 'menu',
@@ -51,7 +59,7 @@ const DEFAULT_CONFIG = {
 	COLOR: '',
 
 	//是否加密localStorage, 为空不加密，可填写AES(模式ECB,移位Pkcs7)加密
-	LS_ENCRYPTION: '',
+	LS_ENCRYPTION: 'AES',
 
 	//localStorageAES加密秘钥，位数建议填写8的倍数
 	LS_ENCRYPTION_key: '2XNN4K8LC0ELVWN4',
