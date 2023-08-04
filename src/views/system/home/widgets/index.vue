@@ -2,10 +2,18 @@
 
 	<div :class="['widgets-home', customizing?'customizing':'']" ref="main">
 
-        <div class="widgets-actions">
-            <el-button v-if="customizing" type="primary" icon="el-icon-check" round @click="save">完成</el-button>
-            <el-button v-else type="primary" icon="el-icon-edit" round @click="custom">自定义</el-button>
-        </div>
+		<div class="widgets-actions">
+			<el-button
+				v-if="!customizing"
+				class="diy-btn"
+				type="primary"
+				icon="el-icon-edit"
+				round
+				@click="custom"
+			>
+				自定义
+			</el-button>
+		</div>
 
 		<div class="widgets-content">
 
@@ -61,6 +69,14 @@
 								<el-col :span="24"><span></span></el-col>
 							</el-row>
 						</div>
+						<div class="selectLayout-item item04" :class="{active:grid.layout.join(',')=='8,8,8'}"
+								 @click="setLayout([8,8,8])">
+							<el-row :gutter="2">
+								<el-col :span="8"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
+								<el-col :span="8"><span></span></el-col>
+							</el-row>
+						</div>
 					</div>
 				</el-header>
 				<el-main class="nopadding">
@@ -81,7 +97,8 @@
 					</div>
 				</el-main>
 				<el-footer style="height:51px;">
-					<el-button size="small" @click="backDefaul()">恢复默认</el-button>
+					<el-button @click="backDefaul()">恢复默认</el-button>
+<!--					<el-button type="primary" @click="save">保存</el-button>-->
 				</el-footer>
 			</el-container>
 		</div>
@@ -91,6 +108,8 @@
 <script>
 	import draggable from 'vuedraggable'
 	import allComps from './components'
+
+	const gridKey = "grid_system"
 
 	export default {
 		components: {
@@ -106,7 +125,7 @@
 			}
 		},
 		created(){
-			this.grid = this.$TOOL.data.get("grid") || JSON.parse(JSON.stringify(this.defaultGrid))
+			this.grid = this.$TOOL.data.get(gridKey) || JSON.parse(JSON.stringify(this.defaultGrid))
 		},
 		mounted() {
 			this.$emit('on-mounted')
@@ -174,19 +193,20 @@
 			save(){
 				this.customizing = false
 				this.$refs.widgets.style.removeProperty('transform')
-				this.$TOOL.data.set("grid", this.grid)
+				this.$TOOL.data.set(gridKey, this.grid)
 			},
 			//恢复默认
 			backDefaul(){
 				this.customizing = false
 				this.$refs.widgets.style.removeProperty('transform')
 				this.grid =  JSON.parse(JSON.stringify(this.defaultGrid))
-				this.$TOOL.data.remove("grid")
+				this.$TOOL.data.remove(gridKey)
 			},
 			//关闭
 			close(){
-				this.customizing = false
-				this.$refs.widgets.style.removeProperty('transform')
+				this.save();
+				// this.customizing = false
+				// this.$refs.widgets.style.removeProperty('transform')
 			}
 		}
 	}
@@ -251,12 +271,23 @@
 		.customizing .widgets-wrapper {margin-right:0;}
 	}
 
-    .widgets-actions{
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        z-index: 999;
-        opacity: 0.8;
-    }
+	//自定义按钮样式
+	.widgets-actions {
+		position: fixed;
+		right: -60px;
+		top: 160px;
+		z-index: 999;
+		opacity: 0.8;
+		transition: all 0.8s;
+	}
+
+	.widgets-actions:hover {
+		opacity: 1;
+		right: 5px;
+		.el-button {
+			background: #1b50f1;
+			border-color: #1b50f1;
+		}
+	}
 
 </style>
