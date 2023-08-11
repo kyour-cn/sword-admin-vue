@@ -152,7 +152,7 @@ export default {
 			if (!findDefaultRoute(menu.data.menu)) {
 				//取第一个菜单
 				let menuItem = menu.data.menu[0];
-				if (menuItem.children.length) {
+				if (menuItem.children && menuItem.children.length) {
 					menuItem = menuItem.children[0]
 				}
 				this.$router.replace({
